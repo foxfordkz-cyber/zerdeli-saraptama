@@ -1,0 +1,29 @@
+{
+  "name": "zerdeli-expert-review",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Zerdeli Group curriculum expert review: read drafts, leave voice or text feedback.",
+  "scripts": {
+    "content": "node scripts/build-content.mjs",
+    "predev": "npm run content",
+    "dev": "vite",
+    "prebuild": "npm run content",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "2.118.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "6.1.2",
+    "mammoth": "1.13.0",
+    "node-html-parser": "9.0.5",
+    "vite": "8.3.4"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
