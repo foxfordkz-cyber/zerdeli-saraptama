@@ -1,4 +1,4 @@
-import { useEffect, useId, useState } from 'react';
+import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import Icon from './Icon.jsx';
 import Recorder from './Recorder.jsx';
 import { useI18n } from '../i18n.js';
@@ -6,12 +6,13 @@ import { api } from '../lib/api.js';
 import { HEAD_OFFICE, HEAD_OFFICE_ID, OTHER_ID, SCHOOLS } from '../data/schools.js';
 import { MAX_TEXT_LENGTH } from '../config.js';
 import { readJSON, readString, writeJSON, writeString } from '../lib/storage.js';
+import { sanitizeIdentity, sanitizeSentCounts } from '../lib/feedback-state.js';
 
 const IDENTITY_KEY = 'zerdeli.expert';
 const SENT_KEY = 'zerdeli.sent';
 
 export function sentCounts() {
-  return readJSON(SENT_KEY, {});
+  return sanitizeSentCounts(readJSON(SENT_KEY, {}));
 }
 
 function schoolName(identity) {
@@ -21,14 +22,14 @@ function schoolName(identity) {
 }
 
 function loadIdentity() {
-  return { firstName: '', lastName: '', schoolId: '', otherName: '', ...readJSON(IDENTITY_KEY, {}) };
+  return sanitizeIdentity(readJSON(IDENTITY_KEY, {}));
 }
 
 function identityComplete(identity) {
   return Boolean(identity.firstName.trim() && identity.lastName.trim() && schoolName(identity));
 }
 
-export default function CommentForm({ doc, sectionId, onSectionChange, docTitle }) {
+export default function CommentForm({ doc, sectionId, onSectionChange, docTitle, onRecordingChange }) {
   const { t, lang } = useI18n();
   const uid = useId();
   const draftKey = `zerdeli.draft.${doc.id}`;
@@ -36,12 +37,33 @@ export default function CommentForm({ doc, sectionId, onSectionChange, docTitle 
   const [identity, setIdentity] = useState(loadIdentity);
   const [editingIdentity, setEditingIdentity] = useState(() => !identityComplete(loadIdentity()));
   const [mode, setMode] = useState('voice');
-  const [text, setText] = useState(() => readString(draftKey, ''));
+  const [text, setText] = useState(() => readString(draftKey, '').slice(0, MAX_TEXT_LENGTH));
   const [audio, setAudio] = useState(null);
   const [status, setStatus] = useState('idle'); // idle | sending | sent
   const [error, setError] = useState('');
   const [honey, setHoney] = useState('');
   const [sentHere, setSentHere] = useState(() => sentCounts()[doc.id] || 0);
+  const [recorderBusy, setRecorderBusy] = useState(false);
+  const recorderBusyRef = useRef(false);
+  const submittingRef = useRef(false);
+  const mountedRef = useRef(false);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => { mountedRef.current = false; };
+  }, []);
+
+  // The form owns each preview URL, including while the voice tab is hidden.
+  useEffect(() => {
+    const url = audio?.url;
+    return () => { if (url) URL.revokeObjectURL(url); };
+  }, [audio?.url]);
+
+  const onRecorderBusy = useCallback((busy) => {
+    recorderBusyRef.current = busy;
+    setRecorderBusy(busy);
+    onRecordingChange?.(busy);
+  }, [onRecordingChange]);
 
   useEffect(() => {
     writeString(draftKey, text);
@@ -53,16 +75,22 @@ export default function CommentForm({ doc, sectionId, onSectionChange, docTitle 
 
   async function submit(e) {
     e.preventDefault();
+    if (submittingRef.current) return;
+    if (recorderBusyRef.current) {
+      setError('feedbackFinishRecording');
+      return;
+    }
     setError('');
     if (!identityComplete(identity)) {
       setEditingIdentity(true);
-      setError(t('needIdentity'));
+      setError('needIdentity');
       return;
     }
     if (!hasContent) {
-      setError(t('needContent'));
+      setError('needContent');
       return;
     }
+    submittingRef.current = true;
     setStatus('sending');
     try {
       if (!honey) {
@@ -82,16 +110,20 @@ export default function CommentForm({ doc, sectionId, onSectionChange, docTitle 
       const counts = sentCounts();
       counts[doc.id] = (counts[doc.id] || 0) + 1;
       writeJSON(SENT_KEY, counts);
+      if (readString(draftKey, '') === text) writeString(draftKey, '');
+      if (!mountedRef.current) return;
       setSentHere(counts[doc.id]);
-      if (audio?.url) URL.revokeObjectURL(audio.url);
       setAudio(null);
       setText('');
       setEditingIdentity(false);
       setStatus('sent');
     } catch (err) {
       console.error(err);
+      if (!mountedRef.current) return;
       setStatus('idle');
-      setError(t('sendError'));
+      setError('sendError');
+    } finally {
+      submittingRef.current = false;
     }
   }
 
@@ -128,7 +160,7 @@ export default function CommentForm({ doc, sectionId, onSectionChange, docTitle 
       </div>
 
       {editingIdentity ? (
-        <fieldset className="field-group">
+        <fieldset className="field-group" disabled={status === 'sending'}>
           <div className="field-row">
             <label className="field">
               <span className="field-label">{t('firstName')}</span>
@@ -196,7 +228,7 @@ export default function CommentForm({ doc, sectionId, onSectionChange, docTitle 
               {identity.schoolId === HEAD_OFFICE_ID ? HEAD_OFFICE[lang] : school}
             </span>
           </span>
-          <button type="button" className="btn btn-ghost btn-sm" onClick={() => setEditingIdentity(true)}>
+          <button type="button" className="btn btn-ghost btn-sm" onClick={() => setEditingIdentity(true)} disabled={status === 'sending'}>
             {t('change')}
           </button>
         </div>
@@ -209,6 +241,7 @@ export default function CommentForm({ doc, sectionId, onSectionChange, docTitle 
           className="input"
           value={sectionId}
           onChange={(e) => onSectionChange(e.target.value)}
+          disabled={status === 'sending'}
         >
           <option value="">{t('wholeDocument')}</option>
           {doc.sections.map((s) => (
@@ -231,7 +264,8 @@ export default function CommentForm({ doc, sectionId, onSectionChange, docTitle 
             role="tab"
             aria-selected={mode === key}
             className={`segmented-item${mode === key ? ' is-active' : ''}`}
-            onClick={() => setMode(key)}
+            onClick={() => { if (!recorderBusyRef.current && !submittingRef.current) setMode(key); }}
+            disabled={recorderBusy || status === 'sending'}
           >
             <Icon name={icon} size={16} /> {label}
             {filled ? <span className="filled-dot" aria-hidden="true" /> : null}
@@ -240,7 +274,7 @@ export default function CommentForm({ doc, sectionId, onSectionChange, docTitle 
       </div>
 
       {mode === 'voice' ? (
-        <Recorder value={audio} onChange={setAudio} />
+        <Recorder value={audio} onChange={setAudio} onBusyChange={onRecorderBusy} disabled={status === 'sending'} />
       ) : (
         <label className="field">
           <span className="sr-only">{t('modeText')}</span>
@@ -251,6 +285,7 @@ export default function CommentForm({ doc, sectionId, onSectionChange, docTitle 
             value={text}
             onChange={(e) => setText(e.target.value.slice(0, MAX_TEXT_LENGTH))}
             placeholder={t('textPlaceholder')}
+            disabled={status === 'sending'}
           />
           {text.length > MAX_TEXT_LENGTH - 500 ? (
             <span className="field-note">{t('charsLeft', { n: MAX_TEXT_LENGTH - text.length })}</span>
@@ -270,11 +305,12 @@ export default function CommentForm({ doc, sectionId, onSectionChange, docTitle 
 
       {error ? (
         <p className="field-error" role="alert">
-          <Icon name="alert" size={16} /> {error}
+          <Icon name="alert" size={16} /> {t(error)}
         </p>
       ) : null}
 
-      <button type="submit" className="btn btn-primary btn-block btn-lg" disabled={status === 'sending'}>
+      {recorderBusy ? <p className="field-note" role="status">{t('feedbackFinishRecording')}</p> : null}
+      <button type="submit" className="btn btn-primary btn-block btn-lg" disabled={status === 'sending' || recorderBusy}>
         {status === 'sending' ? (
           <>
             <span className="spinner" aria-hidden="true" /> {t('sending')}

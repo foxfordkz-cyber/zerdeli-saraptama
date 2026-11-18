@@ -2,13 +2,15 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import Icon from '../components/Icon.jsx';
 import AudioPlayer from '../components/AudioPlayer.jsx';
 import { useI18n } from '../i18n.js';
-import { api } from '../lib/api.js';
-import { DOCUMENTS, SUBJECTS, documentLabel, getDocument, getSubject } from '../lib/catalog.js';
+import { api, csvCell } from '../lib/api.js';
+import { DOCUMENTS, RETIRED_DOCUMENTS, SUBJECTS, documentLabel, getCommentDocument, getSubject } from '../lib/catalog.js';
 import { formatDateTime, formatNumber, formatSortable, formatTime, formatTotalAudio, initials, normalize } from '../lib/format.js';
 import { HEAD_OFFICE } from '../data/schools.js';
+import { sectionHref } from '../lib/routing.js';
 
 const EMPTY_FILTERS = { q: '', subject: '', doc: '', school: '', type: '', status: '' };
 const UNCOVERED_PREVIEW = 12;
+const FEED_PAGE_SIZE = 30;
 
 function expertKey(c) {
   return normalize(`${c.first_name} ${c.last_name} ${c.school}`);
@@ -18,6 +20,10 @@ function schoolLabel(name, lang) {
   return name === HEAD_OFFICE.kk ? HEAD_OFFICE[lang] : name;
 }
 
+function commentDocumentLabel(doc, lang, t) {
+  return documentLabel(doc, lang) + (doc.retired ? ` · ${t('archivedDocument')}` : '');
+}
+
 /* ------------------------------------------------------------ Login */
 
 function LoginCard({ onSignedIn, denied }) {
@@ -25,7 +31,7 @@ function LoginCard({ onSignedIn, denied }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState(denied ? t('noAccess') : '');
+  const [error, setError] = useState('');
 
   async function submit(e) {
     e.preventDefault();
@@ -35,7 +41,7 @@ function LoginCard({ onSignedIn, denied }) {
       await api.signIn(email, password);
       await onSignedIn();
     } catch {
-      setError(t('signInError'));
+      setError('adminSignInFailed');
     } finally {
       setBusy(false);
     }
@@ -84,9 +90,9 @@ function LoginCard({ onSignedIn, denied }) {
             </button>
           </>
         )}
-        {error ? (
+        {error || denied ? (
           <p className="field-error" role="alert">
-            <Icon name="alert" size={16} /> {error}
+            <Icon name="alert" size={16} /> {t(error || 'noAccess')}
           </p>
         ) : null}
       </form>
@@ -149,13 +155,20 @@ function CommentCard({ c, onStatus, onDelete }) {
   const { t, lang } = useI18n();
   const [confirming, setConfirming] = useState(false);
   const [busy, setBusy] = useState(false);
-  const doc = getDocument(c.document_id);
+  const [error, setError] = useState('');
+  const doc = getCommentDocument(c.document_id);
+  const documentHref = /^s\d{1,4}$/.test(c.section_id || '') && doc?.sections?.some((section) => section.id === c.section_id)
+    ? sectionHref(c.document_id, c.section_id)
+    : `#/doc/${c.document_id}`;
   const loadSrc = useCallback(() => api.audioUrl(c.audio_path), [c.audio_path]);
 
   async function toggleStatus() {
     setBusy(true);
+    setError('');
     try {
       await onStatus(c, c.status === 'done' ? 'new' : 'done');
+    } catch {
+      setError('adminStatusFailed');
     } finally {
       setBusy(false);
     }
@@ -163,23 +176,35 @@ function CommentCard({ c, onStatus, onDelete }) {
 
   async function remove() {
     setBusy(true);
+    setError('');
     try {
       await onDelete(c);
+    } catch {
+      setError('adminDeleteFailed');
     } finally {
       setBusy(false);
     }
   }
 
   async function downloadAudio() {
-    const ext = c.audio_path.split('.').pop();
-    const name = `${c.last_name}_${c.first_name}_${c.document_id}.${ext}`;
-    const url = api.demo ? await api.audioUrl(c.audio_path) : await api.audioUrl(c.audio_path, { download: name });
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = name;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
+    setBusy(true);
+    setError('');
+    try {
+      const ext = c.audio_path.split('.').pop();
+      const name = `${c.last_name}_${c.first_name}_${c.document_id}.${ext}`;
+      const url = api.demo ? await api.audioUrl(c.audio_path) : await api.audioUrl(c.audio_path, { download: name });
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = name;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      if (url.startsWith('blob:')) setTimeout(() => URL.revokeObjectURL(url), 1000);
+    } catch {
+      setError('adminAudioDownloadFailed');
+    } finally {
+      setBusy(false);
+    }
   }
 
   return (
@@ -200,10 +225,10 @@ function CommentCard({ c, onStatus, onDelete }) {
         </span>
       </header>
 
-      <a className="ccard-doc" href={`#/doc/${c.document_id}`}>
+      <a className="ccard-doc" href={documentHref}>
         <Icon name="doc" size={16} />
         <span>
-          {doc ? documentLabel(doc, lang) : c.document_id}
+          {doc ? commentDocumentLabel(doc, lang, t) : c.document_id}
           {c.section_title ? <span className="ccard-section"> › {c.section_title}</span> : null}
         </span>
       </a>
@@ -214,6 +239,7 @@ function CommentCard({ c, onStatus, onDelete }) {
         </div>
       ) : null}
       {c.body ? <p className="ccard-body">{c.body}</p> : null}
+      {error ? <p className="field-error" role="alert">{t(error)}</p> : null}
 
       <footer className="ccard-actions">
         {confirming ? (
@@ -222,7 +248,7 @@ function CommentCard({ c, onStatus, onDelete }) {
             <button type="button" className="btn btn-danger btn-sm" onClick={remove} disabled={busy}>
               {t('deleteYes')}
             </button>
-            <button type="button" className="btn btn-ghost btn-sm" onClick={() => setConfirming(false)}>
+            <button type="button" className="btn btn-ghost btn-sm" onClick={() => setConfirming(false)} disabled={busy}>
               {t('cancel')}
             </button>
           </>
@@ -233,11 +259,11 @@ function CommentCard({ c, onStatus, onDelete }) {
               {c.status === 'done' ? t('markNew') : t('markDone')}
             </button>
             {c.audio_path ? (
-              <button type="button" className="btn btn-ghost btn-sm" onClick={downloadAudio}>
+              <button type="button" className="btn btn-ghost btn-sm" onClick={downloadAudio} disabled={busy}>
                 <Icon name="download" size={16} /> {t('downloadAudio')}
               </button>
             ) : null}
-            <button type="button" className="btn btn-ghost btn-sm btn-quiet-danger" onClick={() => setConfirming(true)}>
+            <button type="button" className="btn btn-ghost btn-sm btn-quiet-danger" onClick={() => setConfirming(true)} disabled={busy}>
               <Icon name="trash" size={16} /> {t('delete')}
             </button>
           </>
@@ -249,19 +275,14 @@ function CommentCard({ c, onStatus, onDelete }) {
 
 /* ------------------------------------------------------------ CSV */
 
-function csvCell(v) {
-  const s = v == null ? '' : String(v);
-  return /[";\n\r]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
-}
-
 async function exportCsv(rows, t, lang) {
-  const urls = await api.exportAudioUrls(rows.filter((r) => r.audio_path).map((r) => r.audio_path)).catch(() => ({}));
+  const urls = await api.exportAudioUrls(rows.filter((r) => r.audio_path).map((r) => r.audio_path));
   const header = [
     t('csvDate'), t('csvFirst'), t('csvLast'), t('csvSchool'), t('csvSubject'), t('csvDoc'),
-    t('csvSection'), t('csvType'), t('csvText'), t('csvDuration'), t('csvAudio'), t('csvStatus'),
+    t('csvSection'), t('csvType'), t('csvText'), t('csvDuration'), t('csvAudio'), t('adminCsvAudioPath'), t('csvStatus'), t('csvDocId'),
   ];
   const lines = rows.map((r) => {
-    const doc = getDocument(r.document_id);
+    const doc = getCommentDocument(r.document_id);
     const subject = doc ? getSubject(doc.subject) : null;
     const type = [r.audio_path ? t('typeVoice') : '', r.body ? t('typeText') : ''].filter(Boolean).join(' + ');
     return [
@@ -270,13 +291,15 @@ async function exportCsv(rows, t, lang) {
       r.last_name,
       schoolLabel(r.school, lang),
       subject ? subject.title[lang] : '',
-      doc ? doc.title[lang] + (doc.lang === 'ru' ? ' (RU)' : '') : r.document_id,
+      doc ? doc.title[lang] + (doc.lang === 'ru' ? ' (RU)' : '') + (doc.retired ? ` · ${t('archivedDocument')}` : '') : r.document_id,
       r.section_title || '',
       type,
       r.body || '',
       r.audio_duration_sec || '',
-      r.audio_path ? urls[r.audio_path] || '' : '',
+      r.audio_path ? (api.demo ? t('adminCsvLocalAudio') : urls[r.audio_path]) : '',
+      r.audio_path || '',
       r.status === 'new' ? t('statusNew') : t('statusDone'),
+      r.document_id,
     ]
       .map(csvCell)
       .join(';');
@@ -296,7 +319,7 @@ async function exportCsv(rows, t, lang) {
 
 export default function AdminPage() {
   const { t, lang } = useI18n();
-  const [phase, setPhase] = useState('checking'); // checking | login | denied | ready
+  const [phase, setPhase] = useState('checking'); // checking | login | denied | ready | error
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadError, setLoadError] = useState('');
@@ -305,6 +328,12 @@ export default function AdminPage() {
   const [showAllUncovered, setShowAllUncovered] = useState(false);
   const [copied, setCopied] = useState(false);
   const [exporting, setExporting] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
+  const [actionError, setActionError] = useState('');
+  const [notice, setNotice] = useState('');
+  const [shownComments, setShownComments] = useState(FEED_PAGE_SIZE);
+
+  useEffect(() => setShownComments(FEED_PAGE_SIZE), [filters]);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -314,7 +343,7 @@ export default function AdminPage() {
       setUpdatedAt(new Date());
     } catch (err) {
       console.error(err);
-      setLoadError(t('loadError'));
+      setLoadError('loadError');
     } finally {
       setLoading(false);
     }
@@ -323,7 +352,7 @@ export default function AdminPage() {
   const checkAccess = useCallback(async () => {
     const session = await api.getSession();
     if (!session) return setPhase('login');
-    const ok = await api.isAdmin().catch(() => false);
+    const ok = await api.isAdmin();
     if (!ok) {
       await api.signOut();
       return setPhase('denied');
@@ -333,7 +362,7 @@ export default function AdminPage() {
   }, [load]);
 
   useEffect(() => {
-    checkAccess();
+    checkAccess().catch(() => setPhase('error'));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -345,7 +374,7 @@ export default function AdminPage() {
     const bySubject = new Map(SUBJECTS.map((s) => [s.id, 0]));
     const bySchool = new Map();
     for (const c of comments) {
-      const doc = getDocument(c.document_id);
+      const doc = getCommentDocument(c.document_id);
       if (doc) bySubject.set(doc.subject, (bySubject.get(doc.subject) || 0) + 1);
       bySchool.set(c.school, (bySchool.get(c.school) || 0) + 1);
     }
@@ -369,14 +398,15 @@ export default function AdminPage() {
 
   const schoolOptions = useMemo(() => [...new Set(comments.map((c) => c.school))].sort(), [comments]);
   const docOptions = useMemo(
-    () => DOCUMENTS.filter((d) => !filters.subject || d.subject === filters.subject),
-    [filters.subject],
+    () => [...DOCUMENTS, ...RETIRED_DOCUMENTS.filter((d) => comments.some((c) => c.document_id === d.id))]
+      .filter((d) => !filters.subject || d.subject === filters.subject),
+    [comments, filters.subject],
   );
 
   const visible = useMemo(() => {
     const words = normalize(filters.q).split(' ').filter(Boolean);
     return comments.filter((c) => {
-      const doc = getDocument(c.document_id);
+      const doc = getCommentDocument(c.document_id);
       if (filters.subject && doc?.subject !== filters.subject) return false;
       if (filters.doc && c.document_id !== filters.doc) return false;
       if (filters.school && c.school !== filters.school) return false;
@@ -401,14 +431,26 @@ export default function AdminPage() {
   }
 
   async function onDelete(c) {
-    await api.deleteComment(c);
+    setActionError('');
+    const result = await api.deleteComment(c);
     setComments((prev) => prev.filter((x) => x.id !== c.id));
+    if (result?.audioCleanupFailed) setActionError('adminAudioCleanupFailed');
   }
 
   async function signOut() {
-    await api.signOut();
-    setComments([]);
-    setPhase('login');
+    setSigningOut(true);
+    setActionError('');
+    try {
+      await api.signOut();
+      setComments([]);
+      setUpdatedAt(null);
+      setFilters(EMPTY_FILTERS);
+      setPhase('login');
+    } catch {
+      setActionError('adminSignOutFailed');
+    } finally {
+      setSigningOut(false);
+    }
   }
 
   async function copySiteLink() {
@@ -424,8 +466,13 @@ export default function AdminPage() {
 
   async function onExport() {
     setExporting(true);
+    setActionError('');
+    setNotice('');
     try {
       await exportCsv(visible, t, lang);
+      if (api.demo && visible.some((c) => c.audio_path)) setNotice('adminDemoExportNotice');
+    } catch {
+      setActionError('adminExportFailed');
     } finally {
       setExporting(false);
     }
@@ -434,9 +481,20 @@ export default function AdminPage() {
   if (phase === 'checking') {
     return (
       <div className="page">
-        <div className="doc-loading">
+        <div className="doc-loading" role="status" aria-label={t('adminCheckingAccess')}>
           <span className="spinner" aria-hidden="true" />
         </div>
+      </div>
+    );
+  }
+  if (phase === 'error') {
+    return (
+      <div className="page">
+        <p className="field-error" role="alert">{t('adminAccessFailed')}</p>
+        <button type="button" className="btn btn-primary" onClick={() => {
+          setPhase('checking');
+          checkAccess().catch(() => setPhase('error'));
+        }}>{t('refresh')}</button>
       </div>
     );
   }
@@ -461,10 +519,10 @@ export default function AdminPage() {
           <button type="button" className="btn btn-secondary" onClick={load} disabled={loading}>
             <Icon name="refresh" size={18} /> {t('refresh')}
           </button>
-          <button type="button" className="btn btn-primary" onClick={onExport} disabled={exporting || !visible.length}>
+          <button type="button" className="btn btn-primary" onClick={onExport} disabled={exporting || loading || !visible.length} aria-busy={exporting}>
             <Icon name="table" size={18} /> {t('exportCsv')}
           </button>
-          <button type="button" className="icon-btn" onClick={signOut} aria-label={t('signOut')} title={t('signOut')}>
+          <button type="button" className="icon-btn" onClick={signOut} disabled={signingOut} aria-label={t('signOut')} title={t('signOut')}>
             <Icon name="logout" size={18} />
           </button>
         </div>
@@ -472,27 +530,30 @@ export default function AdminPage() {
 
       {loadError ? (
         <p className="field-error" role="alert">
-          <Icon name="alert" size={16} /> {loadError}
+          <Icon name="alert" size={16} /> {t(loadError)}
         </p>
       ) : null}
+      {actionError ? <p className="field-error" role="alert">{t(actionError)}</p> : null}
+      {notice ? <p className="muted" role="status">{t(notice)}</p> : null}
+      {loading ? <p className="muted" role="status">{t('adminLoadingComments')}</p> : null}
 
       <div className="stats">
-        <StatTile label={t('kpiTotal')} value={formatNumber(stats.total, lang)} sub={t('kpiTotalSub', { n: stats.fresh })} />
-        <StatTile label={t('kpiVoice')} value={formatNumber(stats.voice, lang)} sub={t('kpiVoiceSub', { m: stats.audioTotal })} />
+        <StatTile label={t('kpiTotal')} value={updatedAt ? formatNumber(stats.total, lang) : '—'} sub={updatedAt ? t('kpiTotalSub', { n: stats.fresh }) : null} />
+        <StatTile label={t('kpiVoice')} value={updatedAt ? formatNumber(stats.voice, lang) : '—'} sub={updatedAt ? t('kpiVoiceSub', { m: stats.audioTotal }) : null} />
         <StatTile
           label={t('kpiExperts')}
-          value={formatNumber(stats.experts, lang)}
-          sub={t('kpiExpertsSub', { n: stats.schools })}
+          value={updatedAt ? formatNumber(stats.experts, lang) : '—'}
+          sub={updatedAt ? t('kpiExpertsSub', { n: stats.schools }) : null}
         />
         <StatTile
           label={t('kpiCoverage')}
-          value={`${stats.covered} / ${DOCUMENTS.length}`}
-          meter={stats.covered / DOCUMENTS.length}
-          sub={t('kpiCoverageSub', { n: stats.uncovered.length })}
+          value={updatedAt ? `${stats.covered} / ${DOCUMENTS.length}` : '—'}
+          meter={updatedAt ? stats.covered / Math.max(1, DOCUMENTS.length) : null}
+          sub={updatedAt ? t('kpiCoverageSub', { n: stats.uncovered.length }) : null}
         />
       </div>
 
-      <div className="panels">
+      {updatedAt ? <div className="panels">
         <BarList
           title={t('bySubject')}
           hint={t('byHint')}
@@ -539,7 +600,7 @@ export default function AdminPage() {
             )}
           </section>
         </div>
-      </div>
+      </div> : null}
 
       <section className="feed" aria-labelledby="feed-title">
         <div className="filters">
@@ -566,7 +627,7 @@ export default function AdminPage() {
             <option value="">{t('filterDocument')}: {t('any')}</option>
             {docOptions.map((d) => (
               <option key={d.id} value={d.id}>
-                {documentLabel(d, lang)}
+                {commentDocumentLabel(d, lang, t)}
               </option>
             ))}
           </select>
@@ -591,7 +652,7 @@ export default function AdminPage() {
         </div>
 
         <div className="feed-head">
-          <h2 id="feed-title">{t('resultsCount', { n: visible.length })}</h2>
+          <h2 id="feed-title">{updatedAt ? t('resultsCount', { n: visible.length }) : t('feedbackTitle')}</h2>
           {filtersActive ? (
             <button type="button" className="link-btn" onClick={() => setFilters(EMPTY_FILTERS)}>
               {t('resetFilters')}
@@ -601,17 +662,22 @@ export default function AdminPage() {
 
         {visible.length ? (
           <div className="feed-list">
-            {visible.map((c) => (
+            {visible.slice(0, shownComments).map((c) => (
               <CommentCard key={c.id} c={c} onStatus={onStatus} onDelete={onDelete} />
             ))}
+            {shownComments < visible.length ? (
+              <button type="button" className="btn btn-secondary" onClick={() => setShownComments((n) => n + FEED_PAGE_SIZE)}>
+                {t('showMore', { n: Math.min(FEED_PAGE_SIZE, visible.length - shownComments) })}
+              </button>
+            ) : null}
           </div>
-        ) : (
+        ) : !loading && !loadError ? (
           <div className="empty">
             <Icon name="comment" size={28} />
             <h3>{comments.length ? t('emptyFiltered') : t('emptyFeed')}</h3>
             {comments.length ? null : <p>{t('emptyFeedHint')}</p>}
           </div>
-        )}
+        ) : null}
       </section>
     </div>
   );

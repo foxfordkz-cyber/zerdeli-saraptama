@@ -621,7 +621,11 @@ select.input {
   color: var(--ink-2);
 }
 
-.kind-concept {
+.kind-concept,
+.kind-matrix,
+.kind-guide,
+.kind-plan,
+.kind-collection {
   background: transparent;
   color: var(--ink-2);
   box-shadow: inset 0 0 0 1px var(--line-strong);
@@ -977,6 +981,58 @@ select.input {
   font-weight: 700;
 }
 
+.system-parts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  margin-bottom: var(--s5);
+}
+
+.system-part {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s3);
+  padding: var(--s3) var(--s4);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  color: var(--ink-2);
+  text-decoration: none;
+  font-size: var(--fs-md);
+}
+
+.system-part:hover,
+.system-part.is-active {
+  color: var(--accent-soft-ink);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.system-part-number {
+  flex: none;
+  font-weight: 700;
+}
+
+.compact-contents {
+  display: none;
+  margin-bottom: var(--s5);
+  padding: var(--s3) var(--s4);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--surface);
+}
+
+.compact-contents summary {
+  cursor: pointer;
+  font-size: var(--fs-md);
+  font-weight: 600;
+}
+
+.compact-contents .toc-list {
+  max-height: 50vh;
+  overflow-y: auto;
+  margin-top: var(--s3);
+}
+
 .doc-note {
   font-size: var(--fs-lg);
   color: var(--ink-2);
@@ -1179,6 +1235,49 @@ select.input {
 
 .prose .doc-subtitle {
   color: var(--ink-2);
+}
+
+.prose img {
+  max-width: 100%;
+  height: auto;
+}
+
+.prose .pdf-page-image {
+  display: block;
+  width: 100%;
+  border-radius: var(--r-md);
+  background: #fff;
+  box-shadow: 0 0 0 1px var(--line);
+}
+
+.prose .pdf-page-text {
+  padding: var(--s3) var(--s4);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--surface);
+}
+
+.prose .pdf-page-text summary {
+  cursor: pointer;
+  color: var(--ink-2);
+  font-family: var(--font-ui);
+  font-size: var(--fs-md);
+  font-weight: 600;
+}
+
+.prose .pdf-page-text[open] summary {
+  margin-bottom: var(--s3);
+}
+
+.prose .pdf-page-text p + p {
+  margin-top: 0.8em;
+}
+
+.prose .pdf-page-text pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 0.875rem;
+  line-height: 1.5;
 }
 
 .table-wrap {
@@ -1683,6 +1782,10 @@ select.input {
 
   .toc {
     display: none;
+  }
+
+  .compact-contents {
+    display: block;
   }
 }
 

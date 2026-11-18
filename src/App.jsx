@@ -6,13 +6,8 @@ import Icon from './components/Icon.jsx';
 import CatalogPage from './pages/CatalogPage.jsx';
 import DocumentPage from './pages/DocumentPage.jsx';
 import AdminPage from './pages/AdminPage.jsx';
-
-function parseHash(hash) {
-  const parts = hash.replace(/^#\/?/, '').split('/').filter(Boolean);
-  if (parts[0] === 'doc' && parts[1]) return { name: 'doc', id: decodeURIComponent(parts[1]) };
-  if (parts[0] === 'admin') return { name: 'admin' };
-  return { name: 'catalog' };
-}
+import { parseHash } from './lib/routing.js';
+import { documentLabel, getDocument } from './lib/catalog.js';
 
 function useRoute() {
   const [route, setRoute] = useState(() => parseHash(window.location.hash));
@@ -43,8 +38,12 @@ export default function App() {
 
   useEffect(() => {
     document.documentElement.setAttribute('lang', lang);
-    document.title = translate(lang, 'brand') + ' ' + translate(lang, 'brandSub');
-  }, [lang]);
+    const currentDoc = route.name === 'doc' ? getDocument(route.id) : null;
+    const title = currentDoc ? documentLabel(currentDoc, lang)
+      : route.name === 'admin' ? translate(lang, 'adminTitle') : translate(lang, 'heroTitle');
+    document.title = `${title} · ${translate(lang, 'brand')}`;
+    document.querySelector('meta[name="description"]')?.setAttribute('content', translate(lang, 'heroLead'));
+  }, [lang, route.name, route.id]);
 
   useEffect(() => {
     if (theme) document.documentElement.setAttribute('data-theme', theme);
@@ -67,8 +66,11 @@ export default function App() {
 
   return (
     <LangContext.Provider value={i18n}>
-      <a className="skip-link" href="#main">
-        {lang === 'ru' ? 'К содержанию' : 'Негізгі мазмұнға өту'}
+      <a className="skip-link" href="#main" onClick={(e) => {
+        e.preventDefault();
+        document.getElementById('main')?.focus();
+      }}>
+        {t('skipToContent')}
       </a>
       <header className="topbar">
         <div className="topbar-inner">
@@ -82,13 +84,15 @@ export default function App() {
             </span>
           </a>
           <div className="topbar-actions">
-            <div className="lang-switch" role="group" aria-label="Тіл / Язык">
+            <div className="lang-switch" role="group" aria-label={t('languageLabel')}>
               {['kk', 'ru'].map((code) => (
                 <button
                   key={code}
                   type="button"
                   className={lang === code ? 'is-active' : ''}
                   aria-pressed={lang === code}
+                  aria-label={t(code === 'kk' ? 'switchToKk' : 'switchToRu')}
+                  title={t(code === 'kk' ? 'switchToKk' : 'switchToRu')}
                   onClick={() => setLang(code)}
                 >
                   {code === 'kk' ? t('langKk') : t('langRu')}
@@ -114,8 +118,8 @@ export default function App() {
         </div>
       ) : null}
 
-      <main id="main" className={`main main-${route.name}`}>
-        {route.name === 'doc' ? <DocumentPage key={route.id} id={route.id} /> : null}
+      <main id="main" tabIndex={-1} className={`main main-${route.name}`}>
+        {route.name === 'doc' ? <DocumentPage key={route.id} id={route.id} initialSection={route.section} /> : null}
         {route.name === 'admin' ? <AdminPage /> : null}
         {route.name === 'catalog' ? <CatalogPage /> : null}
       </main>

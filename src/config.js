@@ -3,8 +3,9 @@
 // supabase/schema.sql. Set them in .env.production (or GitHub Actions
 // variables SUPABASE_URL / SUPABASE_ANON_KEY). Without them the site runs in
 // demo mode and keeps comments only in the current browser.
-export const SUPABASE_URL = (import.meta.env.VITE_SUPABASE_URL || '').trim();
-export const SUPABASE_ANON_KEY = (import.meta.env.VITE_SUPABASE_ANON_KEY || '').trim();
+const env = import.meta.env || {};
+export const SUPABASE_URL = (env.VITE_SUPABASE_URL || '').trim();
+export const SUPABASE_ANON_KEY = (env.VITE_SUPABASE_ANON_KEY || '').trim();
 export const IS_DEMO = !SUPABASE_URL || !SUPABASE_ANON_KEY;
 
 export const AUDIO_BUCKET = 'comment-audio';
