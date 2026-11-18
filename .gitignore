@@ -4,3 +4,4 @@ public/content/
 src/generated/
 .env.local
 .DS_Store
+.work/

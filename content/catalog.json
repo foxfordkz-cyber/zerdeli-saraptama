@@ -1,172 +1,1413 @@
 {
   "subjects": [
-    { "id": "math", "grades": "1–4", "title": { "kk": "Зерделі математика", "ru": "Математика Zerdeli" } },
-    { "id": "english", "grades": "1–9", "title": { "kk": "Ағылшын тілі", "ru": "Английский язык" } },
-    { "id": "kazakh", "grades": "5–6", "title": { "kk": "Қазақ тілі", "ru": "Казахский язык" } },
-    { "id": "russian", "grades": "5–6", "title": { "kk": "Орыс тілі", "ru": "Русский язык" } },
-    { "id": "natural-science", "grades": "5–6", "title": { "kk": "Жаратылыстану", "ru": "Естествознание" } },
-    { "id": "science", "grades": "1–9", "title": { "kk": "Zerdeli Science", "ru": "Zerdeli Science" } },
-    { "id": "classic", "grades": "3–9", "title": { "kk": "Zerdeli Classic", "ru": "Zerdeli Classic" } },
-    { "id": "art-studio", "grades": "1–4", "title": { "kk": "Zerdeli Art Studio", "ru": "Zerdeli Art Studio" } },
-    { "id": "dombyra", "grades": "1–4", "title": { "kk": "Домбыра", "ru": "Домбра" } },
-    { "id": "togyz", "grades": "1–9", "title": { "kk": "Тоғызқұмалақ", "ru": "Тогызкумалак" } }
+    {
+      "id": "education-system",
+      "grades": null,
+      "title": {
+        "kk": "Zerdeli білім беру жүйесі",
+        "ru": "Образовательная система Zerdeli"
+      }
+    },
+    {
+      "id": "math",
+      "grades": "1–7",
+      "title": {
+        "kk": "Зерделі математика",
+        "ru": "Математика Zerdeli"
+      }
+    },
+    {
+      "id": "logic",
+      "grades": "1–4",
+      "title": {
+        "kk": "Зерделі логика",
+        "ru": "Логика Zerdeli"
+      }
+    },
+    {
+      "id": "english",
+      "grades": "1–9",
+      "title": {
+        "kk": "Ағылшын тілі",
+        "ru": "Английский язык"
+      }
+    },
+    {
+      "id": "kazakh",
+      "grades": "5–6",
+      "title": {
+        "kk": "Қазақ тілі",
+        "ru": "Казахский язык"
+      }
+    },
+    {
+      "id": "russian",
+      "grades": "5–6",
+      "title": {
+        "kk": "Орыс тілі",
+        "ru": "Русский язык"
+      }
+    },
+    {
+      "id": "natural-science",
+      "grades": "5–6",
+      "title": {
+        "kk": "Жаратылыстану",
+        "ru": "Естествознание"
+      }
+    },
+    {
+      "id": "science",
+      "grades": "1–9",
+      "title": {
+        "kk": "Zerdeli Science",
+        "ru": "Zerdeli Science"
+      }
+    },
+    {
+      "id": "classic",
+      "grades": "3–9",
+      "title": {
+        "kk": "Zerdeli Classic",
+        "ru": "Zerdeli Classic"
+      }
+    },
+    {
+      "id": "art-studio",
+      "grades": "1–4",
+      "title": {
+        "kk": "Zerdeli Art Studio",
+        "ru": "Zerdeli Art Studio"
+      }
+    },
+    {
+      "id": "dombyra",
+      "grades": "1–9",
+      "title": {
+        "kk": "Домбыра",
+        "ru": "Домбра"
+      }
+    },
+    {
+      "id": "togyz",
+      "grades": "1–9",
+      "title": {
+        "kk": "Тоғызқұмалақ",
+        "ru": "Тогызкумалак"
+      }
+    },
+    {
+      "id": "debate",
+      "grades": "5–9",
+      "title": {
+        "kk": "Zerdeli Debate",
+        "ru": "Zerdeli Debate"
+      }
+    },
+    {
+      "id": "flex",
+      "grades": "8–10",
+      "title": {
+        "kk": "FLEX дайындық",
+        "ru": "Подготовка FLEX"
+      }
+    },
+    {
+      "id": "ielts",
+      "grades": "8–11",
+      "title": {
+        "kk": "IELTS дайындық",
+        "ru": "Подготовка IELTS"
+      }
+    },
+    {
+      "id": "nuet",
+      "grades": "8–11",
+      "title": {
+        "kk": "NUET дайындық",
+        "ru": "Подготовка NUET"
+      }
+    },
+    {
+      "id": "sat",
+      "grades": "8–11",
+      "title": {
+        "kk": "SAT дайындық",
+        "ru": "Подготовка SAT"
+      }
+    },
+    {
+      "id": "dance",
+      "grades": "1–9",
+      "title": {
+        "kk": "Би және ырғақ",
+        "ru": "Танец и ритм"
+      }
+    },
+    {
+      "id": "gymnastics",
+      "grades": "1–4",
+      "title": {
+        "kk": "Гимнастика",
+        "ru": "Гимнастика"
+      }
+    },
+    {
+      "id": "chess",
+      "grades": "1–9",
+      "title": {
+        "kk": "Шахмат",
+        "ru": "Шахматы"
+      }
+    },
+    {
+      "id": "mobilography",
+      "grades": "7–11",
+      "title": {
+        "kk": "Мобилография",
+        "ru": "Мобилография"
+      }
+    },
+    {
+      "id": "resources",
+      "grades": null,
+      "title": {
+        "kk": "Әдістемелік материалдар",
+        "ru": "Методические материалы"
+      }
+    }
   ],
   "documents": [
-    { "id": "math-1", "subject": "math", "kind": "program", "grade": "1", "lang": "kk", "source": "1-4 мат/мат 1 сынып.docx",
-      "title": { "kk": "1-сынып бағдарламасы", "ru": "Программа для 1 класса" },
-      "load": { "kk": "5 сабақ/апта · 170 сабақ", "ru": "5 уроков в неделю · 170 уроков" } },
-    { "id": "math-2", "subject": "math", "kind": "program", "grade": "2", "lang": "kk", "source": "1-4 мат/мат 2 сынып.docx",
-      "title": { "kk": "2-сынып бағдарламасы", "ru": "Программа для 2 класса" },
-      "load": { "kk": "5 сабақ/апта · 170 сабақ", "ru": "5 уроков в неделю · 170 уроков" } },
-    { "id": "math-3", "subject": "math", "kind": "program", "grade": "3", "lang": "kk", "source": "1-4 мат/мат 3 сынып.docx",
-      "title": { "kk": "3-сынып бағдарламасы", "ru": "Программа для 3 класса" },
-      "load": { "kk": "5 сабақ/апта · 170 сабақ", "ru": "5 уроков в неделю · 170 уроков" },
-      "note": { "kk": "Математика және логика", "ru": "Математика и логика" } },
-    { "id": "math-4", "subject": "math", "kind": "program", "grade": "4", "lang": "kk", "source": "1-4 мат/мат 4 сынып.docx",
-      "title": { "kk": "4-сынып бағдарламасы", "ru": "Программа для 4 класса" },
-      "load": { "kk": "5 сабақ/апта · 170 сабақ", "ru": "5 уроков в неделю · 170 уроков" },
-      "note": { "kk": "Математика және логика", "ru": "Математика и логика" } },
-
-    { "id": "english-1", "subject": "english", "kind": "program", "grade": "1", "lang": "kk", "source": "1-9 ағылшын/ағылшын 1 сынып.docx",
-      "title": { "kk": "1-сынып бағдарламасы", "ru": "Программа для 1 класса" },
-      "load": { "kk": "4 сабақ/апта · 136 сабақ", "ru": "4 урока в неделю · 136 уроков" } },
-    { "id": "english-1-appendix", "subject": "english", "kind": "appendix", "grade": "1", "lang": "kk", "source": "1-9 ағылшын/ағылшын 1 сынып қосымша.docx",
-      "title": { "kk": "1-сынып қосымшасы", "ru": "Приложение для 1 класса" },
-      "load": { "kk": "4 сабақ/апта · 136 сабақ", "ru": "4 урока в неделю · 136 уроков" } },
-    { "id": "english-1-appendix-ru", "subject": "english", "kind": "appendix", "grade": "1", "lang": "ru", "source": "1-9 ағылшын/рус/Zerdeli_English_1_klass_prilozhenie_RU.docx",
-      "title": { "kk": "1-сынып қосымшасы", "ru": "Приложение для 1 класса" },
-      "load": { "kk": "4 сабақ/апта · 136 сабақ", "ru": "4 урока в неделю · 136 уроков" } },
-    { "id": "english-2-appendix", "subject": "english", "kind": "appendix", "grade": "2", "lang": "kk", "source": "1-9 ағылшын/ағылшын 2 сынып қосымша.docx",
-      "title": { "kk": "2-сынып қосымшасы", "ru": "Приложение для 2 класса" },
-      "load": { "kk": "4 сабақ/апта · 136 сабақ", "ru": "4 урока в неделю · 136 уроков" } },
-    { "id": "english-2-appendix-ru", "subject": "english", "kind": "appendix", "grade": "2", "lang": "ru", "source": "1-9 ағылшын/рус/Zerdeli_English_2_klass_prilozhenie_RU.docx",
-      "title": { "kk": "2-сынып қосымшасы", "ru": "Приложение для 2 класса" },
-      "load": { "kk": "4 сабақ/апта · 136 сабақ", "ru": "4 урока в неделю · 136 уроков" } },
-    { "id": "english-3", "subject": "english", "kind": "program", "grade": "3", "lang": "kk", "source": "1-9 ағылшын/ағылшын 3 сынып.docx",
-      "title": { "kk": "3-сынып бағдарламасы", "ru": "Программа для 3 класса" },
-      "load": { "kk": "5 сабақ/апта · 170 сабақ", "ru": "5 уроков в неделю · 170 уроков" } },
-    { "id": "english-3-ru", "subject": "english", "kind": "program", "grade": "3", "lang": "ru", "source": "1-9 ағылшын/рус/Zerdeli_English_3_klass_programma_RU.docx",
-      "title": { "kk": "3-сынып бағдарламасы", "ru": "Программа для 3 класса" },
-      "load": { "kk": "5 сабақ/апта · 170 сабақ", "ru": "5 уроков в неделю · 170 уроков" } },
-    { "id": "english-3-appendix", "subject": "english", "kind": "appendix", "grade": "3", "lang": "kk", "source": "1-9 ағылшын/ағылшын 3 сынып қосымша.docx",
-      "title": { "kk": "3-сынып қосымшасы", "ru": "Приложение для 3 класса" },
-      "load": { "kk": "5 сабақ/апта · 170 сабақ", "ru": "5 уроков в неделю · 170 уроков" } },
-    { "id": "english-3-appendix-ru", "subject": "english", "kind": "appendix", "grade": "3", "lang": "ru", "source": "1-9 ағылшын/рус/Zerdeli_English_3_klass_prilozhenie_RU_chastichno.docx",
-      "title": { "kk": "3-сынып қосымшасы", "ru": "Приложение для 3 класса" },
-      "load": { "kk": "5 сабақ/апта · 170 сабақ", "ru": "5 уроков в неделю · 170 уроков" },
-      "note": { "kk": "Ішінара аударылған", "ru": "Переведено частично" } },
-    { "id": "english-4", "subject": "english", "kind": "program", "grade": "4", "lang": "kk", "source": "1-9 ағылшын/ағылшын 4 сынып.docx",
-      "title": { "kk": "4-сынып бағдарламасы", "ru": "Программа для 4 класса" },
-      "load": { "kk": "5 сабақ/апта · 170 сабақ", "ru": "5 уроков в неделю · 170 уроков" } },
-    { "id": "english-4-ru", "subject": "english", "kind": "program", "grade": "4", "lang": "ru", "source": "1-9 ағылшын/рус/Zerdeli_English_4_klass_programma_RU.docx",
-      "title": { "kk": "4-сынып бағдарламасы", "ru": "Программа для 4 класса" },
-      "load": { "kk": "5 сабақ/апта · 170 сабақ", "ru": "5 уроков в неделю · 170 уроков" } },
-    { "id": "english-4-appendix", "subject": "english", "kind": "appendix", "grade": "4", "lang": "kk", "source": "1-9 ағылшын/ағылшын 4 сынып қосымша.docx",
-      "title": { "kk": "4-сынып қосымшасы", "ru": "Приложение для 4 класса" },
-      "load": { "kk": "5 сабақ/апта · 170 сабақ", "ru": "5 уроков в неделю · 170 уроков" } },
-    { "id": "english-4-appendix-ru", "subject": "english", "kind": "appendix", "grade": "4", "lang": "ru", "source": "1-9 ағылшын/рус/Zerdeli_English_4_klass_prilozhenie_RU_chastichno.docx",
-      "title": { "kk": "4-сынып қосымшасы", "ru": "Приложение для 4 класса" },
-      "load": { "kk": "5 сабақ/апта · 170 сабақ", "ru": "5 уроков в неделю · 170 уроков" },
-      "note": { "kk": "Ішінара аударылған", "ru": "Переведено частично" } },
-    { "id": "english-5", "subject": "english", "kind": "program", "grade": "5", "lang": "kk", "source": "1-9 ағылшын/ағылшын 5 сынып.docx",
-      "title": { "kk": "5-сынып бағдарламасы", "ru": "Программа для 5 класса" },
-      "load": { "kk": "6 сабақ/апта · 204 сабақ", "ru": "6 уроков в неделю · 204 урока" },
-      "note": { "kk": "Oxford Discover 3", "ru": "Oxford Discover 3" } },
-    { "id": "english-5-appendix", "subject": "english", "kind": "appendix", "grade": "5", "lang": "kk", "source": "1-9 ағылшын/ағылшын 5 сынып қосымша.docx",
-      "title": { "kk": "5-сынып қосымшасы", "ru": "Приложение для 5 класса" },
-      "load": { "kk": "6 сабақ/апта · 204 сабақ", "ru": "6 уроков в неделю · 204 урока" },
-      "note": { "kk": "Oxford Discover 3", "ru": "Oxford Discover 3" } },
-    { "id": "english-6", "subject": "english", "kind": "program", "grade": "6", "lang": "kk", "source": "1-9 ағылшын/ағылшын 6 сынып.docx",
-      "title": { "kk": "6-сынып бағдарламасы", "ru": "Программа для 6 класса" },
-      "load": { "kk": "6 сабақ/апта · 204 сабақ", "ru": "6 уроков в неделю · 204 урока" },
-      "note": { "kk": "Oxford Discover 4", "ru": "Oxford Discover 4" } },
-    { "id": "english-6-appendix", "subject": "english", "kind": "appendix", "grade": "6", "lang": "kk", "source": "1-9 ағылшын/ағылшын 6 қосымша.docx",
-      "title": { "kk": "6-сынып қосымшасы", "ru": "Приложение для 6 класса" },
-      "load": { "kk": "6 сабақ/апта · 204 сабақ", "ru": "6 уроков в неделю · 204 урока" },
-      "note": { "kk": "Oxford Discover 4", "ru": "Oxford Discover 4" } },
-    { "id": "english-7", "subject": "english", "kind": "program", "grade": "7", "lang": "kk", "source": "1-9 ағылшын/ағылшын 7 сынып.docx",
-      "title": { "kk": "7-сынып бағдарламасы", "ru": "Программа для 7 класса" },
-      "load": { "kk": "6 сабақ/апта · 204 сабақ", "ru": "6 уроков в неделю · 204 урока" },
-      "note": { "kk": "Solutions Pre-Intermediate", "ru": "Solutions Pre-Intermediate" } },
-    { "id": "english-7-appendix", "subject": "english", "kind": "appendix", "grade": "7", "lang": "kk", "source": "1-9 ағылшын/ағылшын 7 сынып қосымша.docx",
-      "title": { "kk": "7-сынып қосымшалары", "ru": "Приложения для 7 класса" },
-      "load": { "kk": "6 сабақ/апта · 204 сабақ", "ru": "6 уроков в неделю · 204 урока" },
-      "note": { "kk": "№1–№4 қосымшалар", "ru": "Приложения № 1–4" } },
-    { "id": "english-8", "subject": "english", "kind": "program", "grade": "8", "lang": "kk", "source": "1-9 ағылшын/ағылшын 8 сынып.docx",
-      "title": { "kk": "8-сынып бағдарламасы", "ru": "Программа для 8 класса" },
-      "load": { "kk": "6 сабақ/апта · 204 сабақ", "ru": "6 уроков в неделю · 204 урока" },
-      "note": { "kk": "Solutions Intermediate", "ru": "Solutions Intermediate" } },
-    { "id": "english-8-appendix", "subject": "english", "kind": "appendix", "grade": "8", "lang": "kk", "source": "1-9 ағылшын/ағылшын 8 сынып қосымша.docx",
-      "title": { "kk": "8-сынып қосымшалары", "ru": "Приложения для 8 класса" },
-      "load": { "kk": "6 сабақ/апта · 204 сабақ", "ru": "6 уроков в неделю · 204 урока" },
-      "note": { "kk": "№1–№4 қосымшалар", "ru": "Приложения № 1–4" } },
-    { "id": "english-9", "subject": "english", "kind": "program", "grade": "9", "lang": "kk", "source": "1-9 ағылшын/ағылшын 9 сынып.docx",
-      "title": { "kk": "9-сынып бағдарламасы", "ru": "Программа для 9 класса" },
-      "load": { "kk": "6 сабақ/апта · 204 сабақ", "ru": "6 уроков в неделю · 204 урока" },
-      "note": { "kk": "Solutions Intermediate / Upper-Intermediate", "ru": "Solutions Intermediate / Upper-Intermediate" } },
-    { "id": "english-9-appendix", "subject": "english", "kind": "appendix", "grade": "9", "lang": "kk", "source": "1-9 ағылшын/ағылшын 9 сынып қосымша.docx",
-      "title": { "kk": "9-сынып қосымшалары", "ru": "Приложения для 9 класса" },
-      "load": { "kk": "6 сабақ/апта · 204 сабақ", "ru": "6 уроков в неделю · 204 урока" },
-      "note": { "kk": "№1–№4 қосымшалар", "ru": "Приложения № 1–4" } },
-
-    { "id": "kazakh-5", "subject": "kazakh", "kind": "program", "grade": "5", "lang": "kk", "source": "5-6 қазақ тілі/қазақ тілі 5 сынып_34_sagat.docx",
-      "title": { "kk": "5-сынып бағдарламасы", "ru": "Программа для 5 класса" },
-      "load": { "kk": "1 сағат/апта · 34 сағат", "ru": "1 час в неделю · 34 часа" },
-      "note": { "kk": "Тілдік сауаттылық және мәтінмен жұмыс", "ru": "Языковая грамотность и работа с текстом" } },
-    { "id": "kazakh-6", "subject": "kazakh", "kind": "program", "grade": "6", "lang": "kk", "source": "5-6 қазақ тілі/қазақ тілі 6 сынып_34_sagat практикалық жұмыс.docx",
-      "title": { "kk": "6-сынып бағдарламасы", "ru": "Программа для 6 класса" },
-      "load": { "kk": "1 сағат/апта · 34 сағат", "ru": "1 час в неделю · 34 часа" },
-      "note": { "kk": "Практикалық курс", "ru": "Практический курс" } },
-
-    { "id": "russian-5", "subject": "russian", "kind": "program", "grade": "5", "lang": "kk", "source": "5-6 орыс тілі/орыс тілі 5 сынып_34_sagat.docx",
-      "title": { "kk": "5-сынып бағдарламасы", "ru": "Программа для 5 класса" },
-      "load": { "kk": "1 сағат/апта · 34 сағат", "ru": "1 час в неделю · 34 часа" },
-      "note": { "kk": "Лексика және мәтінмен жұмыс", "ru": "Лексика и работа с текстом" } },
-    { "id": "russian-6", "subject": "russian", "kind": "program", "grade": "6", "lang": "kk", "source": "5-6 орыс тілі/орыс тілі 6 сынып_34_sagat.docx",
-      "title": { "kk": "6-сынып бағдарламасы", "ru": "Программа для 6 класса" },
-      "load": { "kk": "1 сағат/апта · 34 сағат", "ru": "1 час в неделю · 34 часа" },
-      "note": { "kk": "Лексика және мәтінді терең талдау", "ru": "Лексика и глубокий анализ текста" } },
-
-    { "id": "natural-science-5", "subject": "natural-science", "kind": "program", "grade": "5", "lang": "kk", "source": "5-6 жаратылыстану/жаратылыстану 5 сынып_34_sagat.docx",
-      "title": { "kk": "5-сынып бағдарламасы", "ru": "Программа для 5 класса" },
-      "load": { "kk": "1 сағат/апта · 34 сағат", "ru": "1 час в неделю · 34 часа" } },
-    { "id": "natural-science-6", "subject": "natural-science", "kind": "program", "grade": "6", "lang": "kk", "source": "5-6 жаратылыстану/жаратылыстану 6 сынып_68_sagat.docx",
-      "title": { "kk": "6-сынып бағдарламасы", "ru": "Программа для 6 класса" },
-      "load": { "kk": "2 сағат/апта · 68 сағат", "ru": "2 часа в неделю · 68 часов" } },
-
-    { "id": "science-concept", "subject": "science", "kind": "concept", "grade": "1–9", "lang": "kk", "source": "Science/Zerdeli_Science_1-9_tuzhyrymdama.docx",
-      "title": { "kk": "Бағыттың тұжырымдамасы", "ru": "Концепция направления" },
-      "load": { "kk": "1 сабақ/апта · 34 апта", "ru": "1 урок в неделю · 34 недели" },
-      "note": { "kk": "Жаратылыстану сауаттылығы ағылшын тілінде", "ru": "Естественно-научная грамотность на английском" } },
-    { "id": "science-appendix", "subject": "science", "kind": "appendix", "grade": "1–9", "lang": "kk", "source": "Science/Zerdeli_Science_1-9_3_kosymsha (1).docx",
-      "title": { "kk": "Тұжырымдамалық қосымшалар", "ru": "Концептуальные приложения" },
-      "load": { "kk": "1 сабақ/апта · 34 апта", "ru": "1 урок в неделю · 34 недели" },
-      "note": { "kk": "№1–№3 қосымшалар", "ru": "Приложения № 1–3" } },
-
-    { "id": "classic", "subject": "classic", "kind": "program", "grade": "3–9", "lang": "kk", "source": "zerdeli classic/Zerdeli_Classic_birytas_bagdarlama_2026 (1) (1).docx",
-      "title": { "kk": "Біртұтас бағдарлама", "ru": "Единая программа" },
-      "load": { "kk": "1 сағат/апта · 34 сағат", "ru": "1 час в неделю · 34 часа" },
-      "note": { "kk": "Көркем мәтін оқу дағдысы мен мәдениеті", "ru": "Навык и культура чтения художественного текста" } },
-
-    { "id": "art-studio", "subject": "art-studio", "kind": "program", "grade": "1–4", "lang": "kk", "source": "арт студия/Zerdeli_Art_Studio_1-4_avtorlyq_bagdarlama_136_sagat.docx",
-      "title": { "kk": "Бірыңғай авторлық бағдарлама", "ru": "Единая авторская программа" },
-      "load": { "kk": "1 сағат/апта · барлығы 136 сағат", "ru": "1 час в неделю · всего 136 часов" },
-      "note": { "kk": "Бейнелеу, мүсіндеу, сәндік-қолданбалы өнер", "ru": "Рисунок, лепка, декоративно-прикладное искусство" } },
-
-    { "id": "dombyra", "subject": "dombyra", "kind": "program", "grade": "1–4", "lang": "kk", "source": "домбыра/домбыра бағдарлама.docx",
-      "title": { "kk": "Ғылыми-әдістемелік бағдарлама", "ru": "Научно-методическая программа" },
-      "load": { "kk": "1 сабақ/апта · әр сыныпқа 34 сабақ", "ru": "1 урок в неделю · 34 урока на класс" } },
-    { "id": "dombyra-appendix", "subject": "dombyra", "kind": "appendix", "grade": "1–4", "lang": "kk", "source": "домбыра/домбыра қосымша.docx",
-      "title": { "kk": "Қосымшалар жинағы", "ru": "Сборник приложений" },
-      "load": { "kk": "1 сабақ/апта · әр сыныпқа 34 сабақ", "ru": "1 урок в неделю · 34 урока на класс" },
-      "note": { "kk": "№1–№4 қосымшалар", "ru": "Приложения № 1–4" } },
-
-    { "id": "togyz", "subject": "togyz", "kind": "program", "grade": "1–9", "lang": "kk", "source": "9 құмалақ/9 құмалақ бағдарлама.docx",
-      "title": { "kk": "Біртұтас бағдарлама", "ru": "Единая программа" },
-      "load": { "kk": "1 сабақ/апта · әр сыныпқа 34 сабақ", "ru": "1 урок в неделю · 34 урока на класс" } },
-    { "id": "togyz-appendix", "subject": "togyz", "kind": "appendix", "grade": "1–9", "lang": "kk", "source": "9 құмалақ/9 құмалақ қосымша.docx",
-      "title": { "kk": "Қосымшалар жинағы", "ru": "Сборник приложений" },
-      "load": { "kk": "1 сабақ/апта · әр сыныпқа 34 сабақ", "ru": "1 урок в неделю · 34 урока на класс" },
-      "note": { "kk": "№1–№4 қосымшалар", "ru": "Приложения № 1–4" } }
+    {
+      "id": "education-system",
+      "subject": "education-system",
+      "kind": "concept",
+      "grade": null,
+      "lang": "kk",
+      "part": "I",
+      "keepTopHeadings": true,
+      "source": "01Zerdeli_Education_System_I_IV_bolim_zhumys_nusqasy.docx",
+      "title": {
+        "kk": "I бөлім · Білім беру жүйесінің тұжырымдамасы",
+        "ru": "Раздел I · Концепция образовательной системы"
+      },
+      "load": null,
+      "note": {
+        "kk": "1–11-сыныптар · білім беру моделі, авторлық бағдарламалар және оқыту үдерісі",
+        "ru": "1–11 классы · модель образования, авторские программы и организация обучения"
+      }
+    },
+    {
+      "id": "education-matrix",
+      "subject": "education-system",
+      "kind": "matrix",
+      "grade": null,
+      "lang": "kk",
+      "part": "II–V",
+      "source": "00005Zerdeli_matritsa_2026 (5).docx",
+      "title": {
+        "kk": "II–V бөлімдер · Бағдарламалардың бірыңғай матрицасы",
+        "ru": "Разделы II–V · Единая матрица программ"
+      },
+      "load": null,
+      "note": {
+        "kk": "Міндетті және элективті бағыттар, сағаттар, салыстыру және түзетулер",
+        "ru": "Обязательные и элективные направления, часы, сравнение и корректировки"
+      }
+    },
+    {
+      "id": "math-1",
+      "subject": "math",
+      "kind": "program",
+      "grade": "1",
+      "lang": "kk",
+      "source": "1-9 мат/мат 1 сынып.docx",
+      "title": {
+        "kk": "1-сынып бағдарламасы",
+        "ru": "Программа для 1 класса"
+      },
+      "load": {
+        "kk": "5 сабақ/апта · 170 сабақ",
+        "ru": "5 уроков в неделю · 170 уроков"
+      }
+    },
+    {
+      "id": "math-2",
+      "subject": "math",
+      "kind": "program",
+      "grade": "2",
+      "lang": "kk",
+      "source": "1-9 мат/мат 2 сынып.docx",
+      "title": {
+        "kk": "2-сынып бағдарламасы",
+        "ru": "Программа для 2 класса"
+      },
+      "load": {
+        "kk": "5 сабақ/апта · 170 сабақ",
+        "ru": "5 уроков в неделю · 170 уроков"
+      }
+    },
+    {
+      "id": "math-3",
+      "subject": "math",
+      "kind": "program",
+      "grade": "3",
+      "lang": "kk",
+      "source": "1-9 мат/мат 3 сынып.docx",
+      "title": {
+        "kk": "3-сынып бағдарламасы",
+        "ru": "Программа для 3 класса"
+      },
+      "load": {
+        "kk": "5 сабақ/апта · 170 сабақ",
+        "ru": "5 уроков в неделю · 170 уроков"
+      },
+      "note": {
+        "kk": "Математика және логика",
+        "ru": "Математика и логика"
+      }
+    },
+    {
+      "id": "math-4",
+      "subject": "math",
+      "kind": "program",
+      "grade": "4",
+      "lang": "kk",
+      "source": "1-9 мат/мат 4 сынып.docx",
+      "title": {
+        "kk": "4-сынып бағдарламасы",
+        "ru": "Программа для 4 класса"
+      },
+      "load": {
+        "kk": "5 сабақ/апта · 170 сабақ",
+        "ru": "5 уроков в неделю · 170 уроков"
+      },
+      "note": {
+        "kk": "Математика және логика",
+        "ru": "Математика и логика"
+      }
+    },
+    {
+      "id": "math-5",
+      "subject": "math",
+      "kind": "program",
+      "grade": "5",
+      "lang": "kk",
+      "source": "1-9 мат/мат 5 сынып.docx",
+      "title": {
+        "kk": "5-сынып бағдарламасы",
+        "ru": "Программа для 5 класса"
+      },
+      "load": {
+        "kk": "5 сағат/апта · 170 сағат",
+        "ru": "5 часов в неделю · 170 часов"
+      },
+      "note": {
+        "kk": "102 сағат негізгі курс + 68 сағат практикум",
+        "ru": "102 часа основного курса + 68 часов практикума"
+      }
+    },
+    {
+      "id": "math-6",
+      "subject": "math",
+      "kind": "program",
+      "grade": "6",
+      "lang": "kk",
+      "source": "1-9 мат/мат 6 сынып.docx",
+      "title": {
+        "kk": "6-сынып бағдарламасы",
+        "ru": "Программа для 6 класса"
+      },
+      "load": {
+        "kk": "5 сағат/апта · 170 сағат",
+        "ru": "5 часов в неделю · 170 часов"
+      },
+      "note": {
+        "kk": "102 сағат негізгі курс + 68 сағат практикум",
+        "ru": "102 часа основного курса + 68 часов практикума"
+      }
+    },
+    {
+      "id": "math-7",
+      "subject": "math",
+      "kind": "program",
+      "grade": "7",
+      "lang": "kk",
+      "source": "1-9 мат/7-8 материалдар/Zerdeli_Mathematics_7_synyp_zhangartylgan_2026_2027.docx",
+      "title": {
+        "kk": "7-сынып бағдарламасы",
+        "ru": "Программа для 7 класса"
+      },
+      "load": {
+        "kk": "3 сағат/апта · 102 сағат",
+        "ru": "3 часа в неделю · 102 часа"
+      },
+      "note": {
+        "kk": "Алгебра, геометрия және логика",
+        "ru": "Алгебра, геометрия и логика"
+      }
+    },
+    {
+      "id": "english-1",
+      "subject": "english",
+      "kind": "program",
+      "grade": "1",
+      "lang": "kk",
+      "source": "1-9 ағылшын/ағылшын 1 сынып.docx",
+      "title": {
+        "kk": "1-сынып бағдарламасы",
+        "ru": "Программа для 1 класса"
+      },
+      "load": {
+        "kk": "4 сабақ/апта · 136 сабақ",
+        "ru": "4 урока в неделю · 136 уроков"
+      }
+    },
+    {
+      "id": "english-1-appendix",
+      "subject": "english",
+      "kind": "appendix",
+      "grade": "1",
+      "lang": "kk",
+      "source": "1-9 ағылшын/ағылшын 1 сынып қосымша.docx",
+      "title": {
+        "kk": "1-сынып қосымшасы",
+        "ru": "Приложение для 1 класса"
+      },
+      "load": {
+        "kk": "4 сабақ/апта · 136 сабақ",
+        "ru": "4 урока в неделю · 136 уроков"
+      }
+    },
+    {
+      "id": "english-1-appendix-ru",
+      "subject": "english",
+      "kind": "appendix",
+      "grade": "1",
+      "lang": "ru",
+      "source": "1-9 ағылшын/рус/Zerdeli_English_1_klass_prilozhenie_RU.docx",
+      "title": {
+        "kk": "1-сынып қосымшасы",
+        "ru": "Приложение для 1 класса"
+      },
+      "load": {
+        "kk": "4 сабақ/апта · 136 сабақ",
+        "ru": "4 урока в неделю · 136 уроков"
+      }
+    },
+    {
+      "id": "english-2-appendix",
+      "subject": "english",
+      "kind": "appendix",
+      "grade": "2",
+      "lang": "kk",
+      "source": "1-9 ағылшын/ағылшын 2 сынып қосымша.docx",
+      "title": {
+        "kk": "2-сынып қосымшасы",
+        "ru": "Приложение для 2 класса"
+      },
+      "load": {
+        "kk": "4 сабақ/апта · 136 сабақ",
+        "ru": "4 урока в неделю · 136 уроков"
+      }
+    },
+    {
+      "id": "english-2-appendix-ru",
+      "subject": "english",
+      "kind": "appendix",
+      "grade": "2",
+      "lang": "ru",
+      "source": "1-9 ағылшын/рус/Zerdeli_English_2_klass_prilozhenie_RU.docx",
+      "title": {
+        "kk": "2-сынып қосымшасы",
+        "ru": "Приложение для 2 класса"
+      },
+      "load": {
+        "kk": "4 сабақ/апта · 136 сабақ",
+        "ru": "4 урока в неделю · 136 уроков"
+      }
+    },
+    {
+      "id": "english-3",
+      "subject": "english",
+      "kind": "program",
+      "grade": "3",
+      "lang": "kk",
+      "source": "1-9 ағылшын/ағылшын 3 сынып.docx",
+      "title": {
+        "kk": "3-сынып бағдарламасы",
+        "ru": "Программа для 3 класса"
+      },
+      "load": {
+        "kk": "5 сабақ/апта · 170 сабақ",
+        "ru": "5 уроков в неделю · 170 уроков"
+      }
+    },
+    {
+      "id": "english-3-ru",
+      "subject": "english",
+      "kind": "program",
+      "grade": "3",
+      "lang": "ru",
+      "source": "1-9 ағылшын/рус/Zerdeli_English_3_klass_programma_RU.docx",
+      "title": {
+        "kk": "3-сынып бағдарламасы",
+        "ru": "Программа для 3 класса"
+      },
+      "load": {
+        "kk": "5 сабақ/апта · 170 сабақ",
+        "ru": "5 уроков в неделю · 170 уроков"
+      }
+    },
+    {
+      "id": "english-3-appendix",
+      "subject": "english",
+      "kind": "appendix",
+      "grade": "3",
+      "lang": "kk",
+      "source": "1-9 ағылшын/ағылшын 3 сынып қосымша.docx",
+      "title": {
+        "kk": "3-сынып қосымшасы",
+        "ru": "Приложение для 3 класса"
+      },
+      "load": {
+        "kk": "5 сабақ/апта · 170 сабақ",
+        "ru": "5 уроков в неделю · 170 уроков"
+      }
+    },
+    {
+      "id": "english-3-appendix-ru",
+      "subject": "english",
+      "kind": "appendix",
+      "grade": "3",
+      "lang": "ru",
+      "source": "1-9 ағылшын/рус/Zerdeli_English_3_klass_prilozhenie_RU_chastichno.docx",
+      "title": {
+        "kk": "3-сынып қосымшасы",
+        "ru": "Приложение для 3 класса"
+      },
+      "load": {
+        "kk": "5 сабақ/апта · 170 сабақ",
+        "ru": "5 уроков в неделю · 170 уроков"
+      },
+      "note": {
+        "kk": "Ішінара аударылған",
+        "ru": "Переведено частично"
+      }
+    },
+    {
+      "id": "english-4",
+      "subject": "english",
+      "kind": "program",
+      "grade": "4",
+      "lang": "kk",
+      "source": "1-9 ағылшын/ағылшын 4 сынып.docx",
+      "title": {
+        "kk": "4-сынып бағдарламасы",
+        "ru": "Программа для 4 класса"
+      },
+      "load": {
+        "kk": "5 сабақ/апта · 170 сабақ",
+        "ru": "5 уроков в неделю · 170 уроков"
+      }
+    },
+    {
+      "id": "english-4-ru",
+      "subject": "english",
+      "kind": "program",
+      "grade": "4",
+      "lang": "ru",
+      "source": "1-9 ағылшын/рус/Zerdeli_English_4_klass_programma_RU.docx",
+      "title": {
+        "kk": "4-сынып бағдарламасы",
+        "ru": "Программа для 4 класса"
+      },
+      "load": {
+        "kk": "5 сабақ/апта · 170 сабақ",
+        "ru": "5 уроков в неделю · 170 уроков"
+      }
+    },
+    {
+      "id": "english-4-appendix",
+      "subject": "english",
+      "kind": "appendix",
+      "grade": "4",
+      "lang": "kk",
+      "source": "1-9 ағылшын/ағылшын 4 сынып қосымша.docx",
+      "title": {
+        "kk": "4-сынып қосымшасы",
+        "ru": "Приложение для 4 класса"
+      },
+      "load": {
+        "kk": "5 сабақ/апта · 170 сабақ",
+        "ru": "5 уроков в неделю · 170 уроков"
+      }
+    },
+    {
+      "id": "english-4-appendix-ru",
+      "subject": "english",
+      "kind": "appendix",
+      "grade": "4",
+      "lang": "ru",
+      "source": "1-9 ағылшын/рус/Zerdeli_English_4_klass_prilozhenie_RU_chastichno.docx",
+      "title": {
+        "kk": "4-сынып қосымшасы",
+        "ru": "Приложение для 4 класса"
+      },
+      "load": {
+        "kk": "5 сабақ/апта · 170 сабақ",
+        "ru": "5 уроков в неделю · 170 уроков"
+      },
+      "note": {
+        "kk": "Ішінара аударылған",
+        "ru": "Переведено частично"
+      }
+    },
+    {
+      "id": "english-5",
+      "subject": "english",
+      "kind": "program",
+      "grade": "5",
+      "lang": "kk",
+      "source": "1-9 ағылшын/ағылшын 5 сынып.docx",
+      "title": {
+        "kk": "5-сынып бағдарламасы",
+        "ru": "Программа для 5 класса"
+      },
+      "load": {
+        "kk": "6 сабақ/апта · 204 сабақ",
+        "ru": "6 уроков в неделю · 204 урока"
+      },
+      "note": {
+        "kk": "Oxford Discover 3",
+        "ru": "Oxford Discover 3"
+      }
+    },
+    {
+      "id": "english-5-appendix",
+      "subject": "english",
+      "kind": "appendix",
+      "grade": "5",
+      "lang": "kk",
+      "source": "1-9 ағылшын/ағылшын 5 сынып қосымша.docx",
+      "title": {
+        "kk": "5-сынып қосымшасы",
+        "ru": "Приложение для 5 класса"
+      },
+      "load": {
+        "kk": "6 сабақ/апта · 204 сабақ",
+        "ru": "6 уроков в неделю · 204 урока"
+      },
+      "note": {
+        "kk": "Oxford Discover 3",
+        "ru": "Oxford Discover 3"
+      }
+    },
+    {
+      "id": "english-6",
+      "subject": "english",
+      "kind": "program",
+      "grade": "6",
+      "lang": "kk",
+      "source": "1-9 ағылшын/ағылшын 6 сынып.docx",
+      "title": {
+        "kk": "6-сынып бағдарламасы",
+        "ru": "Программа для 6 класса"
+      },
+      "load": {
+        "kk": "6 сабақ/апта · 204 сабақ",
+        "ru": "6 уроков в неделю · 204 урока"
+      },
+      "note": {
+        "kk": "Oxford Discover 4",
+        "ru": "Oxford Discover 4"
+      }
+    },
+    {
+      "id": "english-6-appendix",
+      "subject": "english",
+      "kind": "appendix",
+      "grade": "6",
+      "lang": "kk",
+      "source": "1-9 ағылшын/ағылшын 6 қосымша.docx",
+      "title": {
+        "kk": "6-сынып қосымшасы",
+        "ru": "Приложение для 6 класса"
+      },
+      "load": {
+        "kk": "6 сабақ/апта · 204 сабақ",
+        "ru": "6 уроков в неделю · 204 урока"
+      },
+      "note": {
+        "kk": "Oxford Discover 4",
+        "ru": "Oxford Discover 4"
+      }
+    },
+    {
+      "id": "english-7",
+      "subject": "english",
+      "kind": "program",
+      "grade": "7",
+      "lang": "kk",
+      "source": "1-9 ағылшын/ағылшын 7 сынып.docx",
+      "title": {
+        "kk": "7-сынып бағдарламасы",
+        "ru": "Программа для 7 класса"
+      },
+      "load": {
+        "kk": "6 сабақ/апта · 204 сабақ",
+        "ru": "6 уроков в неделю · 204 урока"
+      },
+      "note": {
+        "kk": "Solutions Pre-Intermediate",
+        "ru": "Solutions Pre-Intermediate"
+      }
+    },
+    {
+      "id": "english-7-appendix",
+      "subject": "english",
+      "kind": "appendix",
+      "grade": "7",
+      "lang": "kk",
+      "source": "1-9 ағылшын/ағылшын 7 сынып қосымша.docx",
+      "title": {
+        "kk": "7-сынып қосымшалары",
+        "ru": "Приложения для 7 класса"
+      },
+      "load": {
+        "kk": "6 сабақ/апта · 204 сабақ",
+        "ru": "6 уроков в неделю · 204 урока"
+      },
+      "note": {
+        "kk": "№1–№4 қосымшалар",
+        "ru": "Приложения № 1–4"
+      }
+    },
+    {
+      "id": "english-8",
+      "subject": "english",
+      "kind": "program",
+      "grade": "8",
+      "lang": "kk",
+      "source": "1-9 ағылшын/ағылшын 8 сынып.docx",
+      "title": {
+        "kk": "8-сынып бағдарламасы",
+        "ru": "Программа для 8 класса"
+      },
+      "load": {
+        "kk": "6 сабақ/апта · 204 сабақ",
+        "ru": "6 уроков в неделю · 204 урока"
+      },
+      "note": {
+        "kk": "Solutions Intermediate",
+        "ru": "Solutions Intermediate"
+      }
+    },
+    {
+      "id": "english-8-appendix",
+      "subject": "english",
+      "kind": "appendix",
+      "grade": "8",
+      "lang": "kk",
+      "source": "1-9 ағылшын/ағылшын 8 сынып қосымша.docx",
+      "title": {
+        "kk": "8-сынып қосымшалары",
+        "ru": "Приложения для 8 класса"
+      },
+      "load": {
+        "kk": "6 сабақ/апта · 204 сабақ",
+        "ru": "6 уроков в неделю · 204 урока"
+      },
+      "note": {
+        "kk": "№1–№4 қосымшалар",
+        "ru": "Приложения № 1–4"
+      }
+    },
+    {
+      "id": "english-9",
+      "subject": "english",
+      "kind": "program",
+      "grade": "9",
+      "lang": "kk",
+      "source": "1-9 ағылшын/ағылшын 9 сынып.docx",
+      "title": {
+        "kk": "9-сынып бағдарламасы",
+        "ru": "Программа для 9 класса"
+      },
+      "load": {
+        "kk": "6 сабақ/апта · 204 сабақ",
+        "ru": "6 уроков в неделю · 204 урока"
+      },
+      "note": {
+        "kk": "Solutions Intermediate / Upper-Intermediate",
+        "ru": "Solutions Intermediate / Upper-Intermediate"
+      }
+    },
+    {
+      "id": "english-9-appendix",
+      "subject": "english",
+      "kind": "appendix",
+      "grade": "9",
+      "lang": "kk",
+      "source": "1-9 ағылшын/ағылшын 9 сынып қосымша.docx",
+      "title": {
+        "kk": "9-сынып қосымшалары",
+        "ru": "Приложения для 9 класса"
+      },
+      "load": {
+        "kk": "6 сабақ/апта · 204 сабақ",
+        "ru": "6 уроков в неделю · 204 урока"
+      },
+      "note": {
+        "kk": "№1–№4 қосымшалар",
+        "ru": "Приложения № 1–4"
+      }
+    },
+    {
+      "id": "kazakh-5",
+      "subject": "kazakh",
+      "kind": "program",
+      "grade": "5",
+      "lang": "kk",
+      "source": "5-6 қазақ тілі/қазақ тілі 5 сынып_34_sagat.docx",
+      "title": {
+        "kk": "5-сынып бағдарламасы",
+        "ru": "Программа для 5 класса"
+      },
+      "load": {
+        "kk": "1 сағат/апта · 34 сағат",
+        "ru": "1 час в неделю · 34 часа"
+      },
+      "note": {
+        "kk": "Тілдік сауаттылық және мәтінмен жұмыс",
+        "ru": "Языковая грамотность и работа с текстом"
+      }
+    },
+    {
+      "id": "kazakh-6",
+      "subject": "kazakh",
+      "kind": "program",
+      "grade": "6",
+      "lang": "kk",
+      "source": "5-6 қазақ тілі/қазақ тілі 6 сынып_34_sagat практикалық жұмыс.docx",
+      "title": {
+        "kk": "6-сынып бағдарламасы",
+        "ru": "Программа для 6 класса"
+      },
+      "load": {
+        "kk": "1 сағат/апта · 34 сағат",
+        "ru": "1 час в неделю · 34 часа"
+      },
+      "note": {
+        "kk": "Практикалық курс",
+        "ru": "Практический курс"
+      }
+    },
+    {
+      "id": "russian-5",
+      "subject": "russian",
+      "kind": "program",
+      "grade": "5",
+      "lang": "kk",
+      "source": "5-6 орыс тілі/орыс тілі 5 сынып_34_sagat.docx",
+      "title": {
+        "kk": "5-сынып бағдарламасы",
+        "ru": "Программа для 5 класса"
+      },
+      "load": {
+        "kk": "1 сағат/апта · 34 сағат",
+        "ru": "1 час в неделю · 34 часа"
+      },
+      "note": {
+        "kk": "Лексика және мәтінмен жұмыс",
+        "ru": "Лексика и работа с текстом"
+      }
+    },
+    {
+      "id": "russian-6",
+      "subject": "russian",
+      "kind": "program",
+      "grade": "6",
+      "lang": "kk",
+      "source": "5-6 орыс тілі/орыс тілі 6 сынып_34_sagat.docx",
+      "title": {
+        "kk": "6-сынып бағдарламасы",
+        "ru": "Программа для 6 класса"
+      },
+      "load": {
+        "kk": "1 сағат/апта · 34 сағат",
+        "ru": "1 час в неделю · 34 часа"
+      },
+      "note": {
+        "kk": "Лексика және мәтінді терең талдау",
+        "ru": "Лексика и глубокий анализ текста"
+      }
+    },
+    {
+      "id": "natural-science-5",
+      "subject": "natural-science",
+      "kind": "program",
+      "grade": "5",
+      "lang": "kk",
+      "source": "5-6 жаратылыстану/жаратылыстану 5 сынып_34_sagat.docx",
+      "title": {
+        "kk": "5-сынып бағдарламасы",
+        "ru": "Программа для 5 класса"
+      },
+      "load": {
+        "kk": "1 сағат/апта · 34 сағат",
+        "ru": "1 час в неделю · 34 часа"
+      }
+    },
+    {
+      "id": "natural-science-6",
+      "subject": "natural-science",
+      "kind": "program",
+      "grade": "6",
+      "lang": "kk",
+      "source": "5-6 жаратылыстану/жаратылыстану 6 сынып_68_sagat.docx",
+      "title": {
+        "kk": "6-сынып бағдарламасы",
+        "ru": "Программа для 6 класса"
+      },
+      "load": {
+        "kk": "2 сағат/апта · 68 сағат",
+        "ru": "2 часа в неделю · 68 часов"
+      }
+    },
+    {
+      "id": "science-concept",
+      "subject": "science",
+      "kind": "concept",
+      "grade": "1–9",
+      "lang": "kk",
+      "source": "Science/Zerdeli_Science_1-9_tuzhyrymdama.docx",
+      "title": {
+        "kk": "Бағыттың тұжырымдамасы",
+        "ru": "Концепция направления"
+      },
+      "load": {
+        "kk": "1 сабақ/апта · 34 апта",
+        "ru": "1 урок в неделю · 34 недели"
+      },
+      "note": {
+        "kk": "Жаратылыстану сауаттылығы ағылшын тілінде",
+        "ru": "Естественно-научная грамотность на английском"
+      }
+    },
+    {
+      "id": "science-appendix",
+      "subject": "science",
+      "kind": "appendix",
+      "grade": "1–9",
+      "lang": "kk",
+      "source": "Science/Zerdeli_Science_1-9_3_kosymsha (1).docx",
+      "title": {
+        "kk": "Тұжырымдамалық қосымшалар",
+        "ru": "Концептуальные приложения"
+      },
+      "load": {
+        "kk": "1 сабақ/апта · 34 апта",
+        "ru": "1 урок в неделю · 34 недели"
+      },
+      "note": {
+        "kk": "№1–№3 қосымшалар",
+        "ru": "Приложения № 1–3"
+      }
+    },
+    {
+      "id": "classic",
+      "subject": "classic",
+      "kind": "program",
+      "grade": "3–9",
+      "lang": "kk",
+      "source": "zerdeli classic/Zerdeli_Classic_birytas_bagdarlama_2026 (1) (1).docx",
+      "title": {
+        "kk": "Біртұтас бағдарлама",
+        "ru": "Единая программа"
+      },
+      "load": {
+        "kk": "1 сағат/апта · 34 сағат",
+        "ru": "1 час в неделю · 34 часа"
+      },
+      "note": {
+        "kk": "Көркем мәтін оқу дағдысы мен мәдениеті",
+        "ru": "Навык и культура чтения художественного текста"
+      }
+    },
+    {
+      "id": "art-studio",
+      "subject": "art-studio",
+      "kind": "program",
+      "grade": "1–4",
+      "lang": "kk",
+      "source": "арт студия/Zerdeli_Art_Studio_1-4_avtorlyq_bagdarlama_136_sagat.docx",
+      "title": {
+        "kk": "Бірыңғай авторлық бағдарлама",
+        "ru": "Единая авторская программа"
+      },
+      "load": {
+        "kk": "1 сағат/апта · барлығы 136 сағат",
+        "ru": "1 час в неделю · всего 136 часов"
+      },
+      "note": {
+        "kk": "Бейнелеу, мүсіндеу, сәндік-қолданбалы өнер",
+        "ru": "Рисунок, лепка, декоративно-прикладное искусство"
+      }
+    },
+    {
+      "id": "dombyra",
+      "subject": "dombyra",
+      "kind": "program",
+      "grade": "1–9",
+      "lang": "kk",
+      "source": "домбыра/Zerdeli_Dombyra_1-9_avtorlyq_bagdarlama_425_sagat.docx",
+      "title": {
+        "kk": "Біртұтас авторлық бағдарлама",
+        "ru": "Единая авторская программа"
+      },
+      "load": {
+        "kk": "1: 17 сағат · 2–5: 68 сағат/жыл · 6–9: 34 сағат/жыл",
+        "ru": "1 класс: 17 часов · 2–5: 68 часов в год · 6–9: 34 часа в год"
+      },
+      "note": {
+        "kk": "1-сынып қаңтардан · жалпы 425 сағат",
+        "ru": "1 класс с января · всего 425 часов"
+      }
+    },
+    {
+      "id": "togyz",
+      "subject": "togyz",
+      "kind": "program",
+      "grade": "1–9",
+      "lang": "kk",
+      "source": "9 құмалақ/Zerdeli_Togyzkumalak_1-9_negizgi_bagdarlama.docx",
+      "title": {
+        "kk": "Біртұтас бағдарлама",
+        "ru": "Единая программа"
+      },
+      "load": {
+        "kk": "1 сабақ/апта · әр сыныпқа 34 сабақ",
+        "ru": "1 урок в неделю · 34 урока на класс"
+      }
+    },
+    {
+      "id": "togyz-appendix",
+      "subject": "togyz",
+      "kind": "appendix",
+      "grade": "1–9",
+      "lang": "kk",
+      "source": "9 құмалақ/Zerdeli_Togyzkumalak_1-9_4_kosymsha.docx",
+      "title": {
+        "kk": "Қосымшалар жинағы",
+        "ru": "Сборник приложений"
+      },
+      "load": {
+        "kk": "1 сабақ/апта · әр сыныпқа 34 сабақ",
+        "ru": "1 урок в неделю · 34 урока на класс"
+      },
+      "note": {
+        "kk": "№1–№4 қосымшалар",
+        "ru": "Приложения № 1–4"
+      }
+    },
+    {
+      "id": "debate",
+      "subject": "debate",
+      "kind": "program",
+      "grade": "5–9",
+      "lang": "kk",
+      "source": "Debate/Zerdeli_Debate_1_9_emes_5_9_QAITADAN.docx",
+      "title": {
+        "kk": "Сыни ойлау және пікірталас бағдарламасы",
+        "ru": "Программа критического мышления и дебатов"
+      },
+      "load": {
+        "kk": "1 сабақ/апта · әр сыныпқа 34 сағат",
+        "ru": "1 урок в неделю · 34 часа на класс"
+      }
+    },
+    {
+      "id": "flex",
+      "subject": "flex",
+      "kind": "program",
+      "grade": "8–10",
+      "lang": "kk",
+      "source": "FLEX/Zerdeli_FLEX_Preparation_8-10_author_program_2026.docx",
+      "title": {
+        "kk": "FLEX дайындық бағдарламасы",
+        "ru": "Программа подготовки FLEX"
+      },
+      "load": {
+        "kk": "2 сағат/апта · әр сыныпқа 68 сағат",
+        "ru": "2 часа в неделю · 68 часов на класс"
+      },
+      "note": {
+        "kk": "Көшбасшылық, эссе, сұхбат және мәдениаралық құзыреттілік",
+        "ru": "Лидерство, эссе, интервью и межкультурные навыки"
+      }
+    },
+    {
+      "id": "ielts-8-9",
+      "subject": "ielts",
+      "kind": "program",
+      "grade": "8–9",
+      "lang": "kk",
+      "source": "IELTS/Zerdeli_IELTS_8_9_68_sagat_zhangartylgan.docx",
+      "title": {
+        "kk": "8–9-сынып бағдарламасы",
+        "ru": "Программа для 8–9 классов"
+      },
+      "load": {
+        "kk": "2 сабақ/апта · әр сыныпқа 68 сағат",
+        "ru": "2 урока в неделю · 68 часов на класс"
+      },
+      "note": {
+        "kk": "Foundation & Bridge",
+        "ru": "Foundation & Bridge"
+      }
+    },
+    {
+      "id": "ielts-10-11",
+      "subject": "ielts",
+      "kind": "program",
+      "grade": "10–11",
+      "lang": "kk",
+      "source": "IELTS/Zerdeli_IELTS_10_11_170_sagat_zhangartylgan.docx",
+      "title": {
+        "kk": "10–11-сынып бағдарламасы",
+        "ru": "Программа для 10–11 классов"
+      },
+      "load": {
+        "kk": "5 сабақ/апта · әр сыныпқа 170 сағат",
+        "ru": "5 уроков в неделю · 170 часов на класс"
+      },
+      "note": {
+        "kk": "Academic Skills & Intensive",
+        "ru": "Academic Skills & Intensive"
+      }
+    },
+    {
+      "id": "nuet",
+      "subject": "nuet",
+      "kind": "program",
+      "grade": "8–11",
+      "lang": "kk",
+      "source": "NUET/NUET.docx",
+      "title": {
+        "kk": "NUET дайындық бағдарламасы",
+        "ru": "Программа подготовки NUET"
+      },
+      "load": {
+        "kk": "4 сабақ/апта · әр сыныпқа 136 сабақ",
+        "ru": "4 урока в неделю · 136 уроков на класс"
+      },
+      "note": {
+        "kk": "Mathematics · Critical Thinking & Problem Solving",
+        "ru": "Mathematics · Critical Thinking & Problem Solving"
+      }
+    },
+    {
+      "id": "sat",
+      "subject": "sat",
+      "kind": "program",
+      "grade": "8–11",
+      "lang": "kk",
+      "source": "SAT/Zerdeli_SAT (1).docx",
+      "title": {
+        "kk": "Digital SAT дайындық бағдарламасы",
+        "ru": "Программа подготовки Digital SAT"
+      },
+      "load": {
+        "kk": "4 сабақ/апта · әр сыныпқа 136 сағат",
+        "ru": "4 урока в неделю · 136 часов на класс"
+      },
+      "note": {
+        "kk": "Math · Reading & Writing",
+        "ru": "Math · Reading & Writing"
+      }
+    },
+    {
+      "id": "dance",
+      "subject": "dance",
+      "kind": "program",
+      "grade": "1–9",
+      "lang": "kk",
+      "source": "би үйірмесі/Zerdeli_Dance_1-9_612_sagat.docx",
+      "title": {
+        "kk": "Би және ырғақ бағдарламасы",
+        "ru": "Программа танца и ритма"
+      },
+      "load": {
+        "kk": "2 сабақ/апта · әр сыныпқа 68 сағат",
+        "ru": "2 урока в неделю · 68 часов на класс"
+      },
+      "note": {
+        "kk": "1–9-сыныптар бойынша 612 сағат",
+        "ru": "612 часов для 1–9 классов"
+      }
+    },
+    {
+      "id": "gymnastics",
+      "subject": "gymnastics",
+      "kind": "program",
+      "grade": "1–4",
+      "lang": "kk",
+      "source": "гимнастика/Zerdeli_Gymnastics_1-4_34_sagat.docx",
+      "title": {
+        "kk": "Сымбатты қозғалыс бағдарламасы",
+        "ru": "Программа гармоничного движения"
+      },
+      "load": {
+        "kk": "1 сабақ/апта · әр сыныпқа 34 сағат",
+        "ru": "1 урок в неделю · 34 часа на класс"
+      }
+    },
+    {
+      "id": "chess",
+      "subject": "chess",
+      "kind": "program",
+      "grade": "1–9",
+      "lang": "kk",
+      "source": "шахмат/Zerdeli_Chess_1-9_avtorlyk_bagdarlama.docx",
+      "title": {
+        "kk": "Шахматтың авторлық бағдарламасы",
+        "ru": "Авторская программа по шахматам"
+      },
+      "load": {
+        "kk": "1–5: 2 сабақ/апта · 6–9: 1 сабақ/апта",
+        "ru": "1–5 классы: 2 урока в неделю · 6–9: 1 урок в неделю"
+      },
+      "note": {
+        "kk": "1–9-сыныптар бойынша 476 сағат",
+        "ru": "476 часов для 1–9 классов"
+      }
+    },
+    {
+      "lang": "kk",
+      "load": null,
+      "id": "program-guidelines",
+      "source": "Zerdeli_avtorlyq_bagdarlamalar_usynystar.pdf",
+      "subject": "resources",
+      "kind": "guide",
+      "grade": null,
+      "title": {
+        "kk": "Авторлық бағдарламаларды жүйелеу жөніндегі ұсыныстар",
+        "ru": "Рекомендации по систематизации авторских программ"
+      },
+      "format": "pdf",
+      "pages": 3
+    },
+    {
+      "lang": "kk",
+      "load": null,
+      "id": "digital-education",
+      "source": "ZERDELI_DIGITAL_EDUCATION_tuzhyrymdama_2026.pdf",
+      "subject": "resources",
+      "kind": "concept",
+      "grade": null,
+      "title": {
+        "kk": "Zerdeli Digital Education тұжырымдамасы",
+        "ru": "Концепция Zerdeli Digital Education"
+      },
+      "format": "pdf",
+      "pages": 5
+    },
+    {
+      "lang": "kk",
+      "load": null,
+      "id": "component-work-plan",
+      "source": "Zerdeli_komponenti_kelesi_zhumys_zhospary.pdf",
+      "subject": "resources",
+      "kind": "plan",
+      "grade": null,
+      "title": {
+        "kk": "Zerdeli компонентін дамыту жоспары",
+        "ru": "План развития компонента Zerdeli"
+      },
+      "format": "pdf",
+      "pages": 2
+    },
+    {
+      "lang": "kk",
+      "load": null,
+      "id": "club-ideas",
+      "source": "Zerdeli_uyirmeler_ideyalar_jinagy_2026.pdf",
+      "subject": "resources",
+      "kind": "collection",
+      "grade": "5–11",
+      "title": {
+        "kk": "Үйірмелер мен клубтар идеялары",
+        "ru": "Идеи кружков и клубов"
+      },
+      "note": {
+        "kk": "8 үйірме идеясы және 4 медиажоба",
+        "ru": "8 идей кружков и 4 медиапроекта"
+      },
+      "format": "pdf",
+      "pages": 8
+    },
+    {
+      "lang": "kk",
+      "load": {
+        "kk": "1–2-апта · 6 сабақ",
+        "ru": "1–2 недели · 6 уроков"
+      },
+      "id": "math-7-teacher-guide",
+      "source": "1-9 мат/7-8 материалдар/Zerdeli_Mathematics_7_mugalim_nusqaulyk_1_2_apta.pdf",
+      "subject": "math",
+      "kind": "guide",
+      "grade": "7",
+      "title": {
+        "kk": "7-сынып мұғаліміне арналған нұсқаулық",
+        "ru": "Руководство для учителя 7 класса"
+      },
+      "format": "pdf",
+      "pages": 5
+    },
+    {
+      "lang": "kk",
+      "load": {
+        "kk": "1–2-апта · 6 сабақ",
+        "ru": "1–2 недели · 6 уроков"
+      },
+      "id": "math-7-workbook",
+      "source": "1-9 мат/7-8 материалдар/Zerdeli_Mathematics_7_okuushy_1_2_apta.pdf",
+      "subject": "math",
+      "kind": "appendix",
+      "grade": "7",
+      "title": {
+        "kk": "7-сынып оқушысының жұмыс дәптері",
+        "ru": "Рабочая тетрадь ученика 7 класса"
+      },
+      "format": "pdf",
+      "pages": 8
+    },
+    {
+      "lang": "kk",
+      "load": null,
+      "id": "nu-admissions-2027",
+      "source": "NUET/NU_TUSU_2027.pdf",
+      "subject": "nuet",
+      "kind": "guide",
+      "grade": "8–11",
+      "title": {
+        "kk": "Назарбаев Университетіне түсу нұсқаулығы",
+        "ru": "Руководство по поступлению в Назарбаев Университет"
+      },
+      "note": {
+        "kk": "2027–2028 қабылдау науқаны",
+        "ru": "Приёмная кампания 2027–2028"
+      },
+      "format": "pdf",
+      "pages": 14
+    },
+    {
+      "lang": "kk",
+      "load": {
+        "kk": "1 сағат/апта · 34 сағат",
+        "ru": "1 час в неделю · 34 часа"
+      },
+      "id": "mobilography",
+      "source": "мобилография/Zerdeli_Mobilography_7-11_2026_2027.pdf",
+      "subject": "mobilography",
+      "kind": "program",
+      "grade": "7–11",
+      "title": {
+        "kk": "Мобильді фото және видео үйірмесінің бағдарламасы",
+        "ru": "Программа кружка мобильной фотографии и видео"
+      },
+      "format": "pdf",
+      "pages": 3
+    },
+    {
+      "lang": "kk",
+      "load": {
+        "kk": "3 сағат/апта · 102 сағат",
+        "ru": "3 часа в неделю · 102 часа"
+      },
+      "id": "logic-1",
+      "source": "1-9 мат/Zerdeli_Logic_1_synyp_102_sagat_KTZH_numaralangan (1).xlsx",
+      "subject": "logic",
+      "kind": "plan",
+      "grade": "1",
+      "title": {
+        "kk": "1-сынып күнтізбелік-тақырыптық жоспары",
+        "ru": "Календарно-тематический план для 1 класса"
+      },
+      "format": "xlsx"
+    },
+    {
+      "lang": "kk",
+      "load": {
+        "kk": "3 сағат/апта · 102 сағат",
+        "ru": "3 часа в неделю · 102 часа"
+      },
+      "id": "logic-2",
+      "source": "1-9 мат/Zerdeli_Logic_2_synyp_102_sagat_KTZH_2026-2027.xlsx",
+      "subject": "logic",
+      "kind": "plan",
+      "grade": "2",
+      "title": {
+        "kk": "2-сынып күнтізбелік-тақырыптық жоспары",
+        "ru": "Календарно-тематический план для 2 класса"
+      },
+      "format": "xlsx"
+    },
+    {
+      "lang": "kk",
+      "load": {
+        "kk": "3 сағат/апта · 102 сағат",
+        "ru": "3 часа в неделю · 102 часа"
+      },
+      "id": "logic-3",
+      "source": "1-9 мат/Zerdeli_Logic_3_synyp_102_sagat_KTZH_2026-2027.xlsx",
+      "subject": "logic",
+      "kind": "plan",
+      "grade": "3",
+      "title": {
+        "kk": "3-сынып күнтізбелік-тақырыптық жоспары",
+        "ru": "Календарно-тематический план для 3 класса"
+      },
+      "format": "xlsx"
+    },
+    {
+      "lang": "kk",
+      "load": {
+        "kk": "3 сағат/апта · 102 сағат",
+        "ru": "3 часа в неделю · 102 часа"
+      },
+      "id": "logic-4",
+      "source": "1-9 мат/Zerdeli_Logic_4_synyp_102_sagat_KTZH_2026-2027.xlsx",
+      "subject": "logic",
+      "kind": "plan",
+      "grade": "4",
+      "title": {
+        "kk": "4-сынып күнтізбелік-тақырыптық жоспары",
+        "ru": "Календарно-тематический план для 4 класса"
+      },
+      "format": "xlsx"
+    },
+    {
+      "lang": "kk",
+      "load": null,
+      "id": "nuet-exam-guide",
+      "source": "NUET/NUET_PDF.zip/NUET.pdf",
+      "archive": "NUET/NUET_PDF.zip",
+      "archiveMember": "NUET.pdf",
+      "subject": "nuet",
+      "kind": "guide",
+      "grade": "8–11",
+      "title": {
+        "kk": "NUET емтиханы туралы толық нұсқаулық",
+        "ru": "Полное руководство по экзамену NUET"
+      },
+      "note": {
+        "kk": "Емтихан құрылымы және дайындық материалдары",
+        "ru": "Структура экзамена и материалы для подготовки"
+      },
+      "format": "pdf",
+      "pages": 9
+    }
   ]
 }

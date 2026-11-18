@@ -1,0 +1,14 @@
+{
+  "sha256": "65fc2e0237bac9e56ef7a367cc1097b05870d3d8787c19ae848cd12c40931bce",
+  "source": "1-9 мат/Zerdeli_Logic_3_synyp_102_sagat_KTZH_2026-2027.xlsx",
+  "format": "xlsx",
+  "worksheets": [
+    {
+      "name": "Логика 3-сынып 102 сағат",
+      "rows": 116,
+      "columns": 9,
+      "filledCells": 852,
+      "mergedRanges": 8
+    }
+  ]
+}
