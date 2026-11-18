@@ -6,6 +6,7 @@
   "description": "Zerdeli Group curriculum expert review: read drafts, leave voice or text feedback.",
   "scripts": {
     "content": "node scripts/build-content.mjs",
+    "test": "npm run content && node --test scripts/*.test.mjs",
     "predev": "npm run content",
     "dev": "vite",
     "prebuild": "npm run content",

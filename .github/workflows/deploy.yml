@@ -23,6 +23,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Test
+        run: npm test
       - name: Build
         env:
           SB_URL: ${{ vars.SUPABASE_URL }}
