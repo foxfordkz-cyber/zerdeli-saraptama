@@ -1,29 +1,42 @@
-/* Layout concept: a quiet reading room. The catalog is a calm index of drafts;
-   a document opens as a reading column between its contents and a sticky
-   review desk where the expert records a voice note or writes. */
+/* Layout concept: a quiet reading room on warm paper. The catalog is a calm
+   index of drafts under a deep-teal masthead; a document opens as a reading
+   column between its contents and a sticky review desk where the expert
+   records a voice note or writes. */
 :root {
-  --bg: #f5f7f7;
+  --bg: #f6f4ef;
   --surface: #ffffff;
-  --surface-2: #eef3f3;
-  --surface-3: #e3eaeb;
-  --line: #dde5e6;
-  --line-strong: #c7d3d5;
-  --ink: #132326;
-  --ink-2: #48595d;
-  --ink-3: #6f8185;
-  --accent: #0f6e78;
-  --accent-hover: #0b5a62;
+  --surface-2: #f0ede6;
+  --surface-3: #e6e2d8;
+  --line: #e5e1d7;
+  --line-strong: #d2cdbf;
+  --ink: #14212b;
+  --ink-2: #47535d;
+  --ink-3: #66707a;
+  --accent: #0d6b76;
+  --accent-hover: #0a5760;
   --accent-ink: #ffffff;
-  --accent-soft: #e2f0f1;
-  --accent-soft-ink: #0b5a62;
+  --accent-soft: #e1eff0;
+  --accent-soft-ink: #0a5760;
+  --gold: #e3ac3f;
+  --hero-bg: radial-gradient(120% 140% at 100% 0%, #1b7f86 0%, rgb(27 127 134 / 0) 55%),
+    linear-gradient(135deg, #0c5862 0%, #0e4560 55%, #142f52 100%);
+  --hero-ink: #ffffff;
+  --hero-ink-2: rgb(255 255 255 / 0.8);
+  --hero-line: rgb(255 255 255 / 0.18);
+  --hero-tile: rgb(255 255 255 / 0.08);
+  /* Each direction has a hue (--hue, set inline); these fix its tone. */
+  --subj-l: 0.6;
+  --subj-c: 0.13;
+  --subj-soft-l: 0.95;
+  --subj-soft-c: 0.03;
   --rec: #d92d20;
   --rec-soft: #fdecea;
   --good: #1d7a4b;
   --good-soft: #e3f3ea;
   --warn-soft: #fff4dc;
   --warn-ink: #7a4b00;
-  --shadow-sm: 0 1px 2px rgb(19 35 38 / 0.06);
-  --shadow-md: 0 1px 2px rgb(19 35 38 / 0.05), 0 8px 24px rgb(19 35 38 / 0.07);
+  --shadow-sm: 0 1px 2px rgb(20 33 43 / 0.06);
+  --shadow-md: 0 1px 2px rgb(20 33 43 / 0.05), 0 10px 28px rgb(20 33 43 / 0.09);
   --shadow-lg: 0 -8px 40px rgb(19 35 38 / 0.16);
   --scrim: rgb(9 20 22 / 0.42);
 
@@ -83,6 +96,17 @@
     --shadow-md: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px rgb(0 0 0 / 0.28);
     --shadow-lg: 0 -8px 40px rgb(0 0 0 / 0.5);
     --scrim: rgb(0 0 0 / 0.55);
+    --gold: #f0c065;
+    --hero-bg: radial-gradient(120% 140% at 100% 0%, #16585e 0%, rgb(22 88 94 / 0) 55%),
+      linear-gradient(135deg, #0f3b42 0%, #112f42 55%, #16243d 100%);
+    --hero-ink: #f2f6f7;
+    --hero-ink-2: rgb(242 246 247 / 0.76);
+    --hero-line: rgb(255 255 255 / 0.12);
+    --hero-tile: rgb(255 255 255 / 0.06);
+    --subj-l: 0.75;
+    --subj-c: 0.12;
+    --subj-soft-l: 0.3;
+    --subj-soft-c: 0.04;
     color-scheme: dark;
   }
 }
@@ -112,6 +136,17 @@
   --shadow-md: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px rgb(0 0 0 / 0.28);
   --shadow-lg: 0 -8px 40px rgb(0 0 0 / 0.5);
   --scrim: rgb(0 0 0 / 0.55);
+  --gold: #f0c065;
+  --hero-bg: radial-gradient(120% 140% at 100% 0%, #16585e 0%, rgb(22 88 94 / 0) 55%),
+    linear-gradient(135deg, #0f3b42 0%, #112f42 55%, #16243d 100%);
+  --hero-ink: #f2f6f7;
+  --hero-ink-2: rgb(242 246 247 / 0.76);
+  --hero-line: rgb(255 255 255 / 0.12);
+  --hero-tile: rgb(255 255 255 / 0.06);
+  --subj-l: 0.75;
+  --subj-c: 0.12;
+  --subj-soft-l: 0.3;
+  --subj-soft-c: 0.04;
   color-scheme: dark;
 }
 
@@ -283,10 +318,11 @@ button {
   display: grid;
   place-items: center;
   border-radius: 10px;
-  background: var(--accent);
-  color: var(--accent-ink);
+  background: var(--hero-bg);
+  color: #ffffff;
   font-weight: 700;
   font-size: var(--fs-lg);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.12), var(--shadow-sm);
 }
 
 .brand-text {
