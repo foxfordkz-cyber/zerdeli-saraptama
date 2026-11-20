@@ -102,7 +102,7 @@ export function createSupabaseApi(getClient = client) {
 
     async signOut() {
       const sb = await getClient();
-      const { error } = await sb.auth.signOut();
+      const { error } = await sb.auth.signOut({ scope: 'local' });
       if (error) throw error;
     },
 
@@ -110,7 +110,8 @@ export function createSupabaseApi(getClient = client) {
       const sb = await getClient();
       const { data, error } = await sb.rpc('is_admin');
       if (error) throw error;
-      return data === true;
+      if (typeof data !== 'boolean') throw new Error('Invalid admin access response');
+      return data;
     },
 
     async listComments() {
@@ -297,3 +298,11 @@ const demoApi = {
 };
 
 export const api = IS_DEMO ? demoApi : supabaseApi;
+
+export async function getAdminAccess(backend = api) {
+  const session = await backend.getSession();
+  if (!session) return { phase: 'login' };
+  return await backend.isAdmin()
+    ? { phase: 'ready' }
+    : { phase: 'denied', email: session.email };
+}

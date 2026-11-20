@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import Icon from '../components/Icon.jsx';
 import AudioPlayer from '../components/AudioPlayer.jsx';
 import { useI18n } from '../i18n.js';
-import { api, csvCell } from '../lib/api.js';
+import { api, csvCell, getAdminAccess } from '../lib/api.js';
 import { DOCUMENTS, RETIRED_DOCUMENTS, SUBJECTS, documentLabel, getCommentDocument, getSubject } from '../lib/catalog.js';
 import { formatDateTime, formatNumber, formatSortable, formatTime, formatTotalAudio, initials, normalize } from '../lib/format.js';
 import { HEAD_OFFICE } from '../data/schools.js';
@@ -26,7 +26,7 @@ function commentDocumentLabel(doc, lang, t) {
 
 /* ------------------------------------------------------------ Login */
 
-function LoginCard({ onSignedIn, denied }) {
+function LoginCard({ onSignedIn }) {
   const { t } = useI18n();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -39,9 +39,9 @@ function LoginCard({ onSignedIn, denied }) {
     setError('');
     try {
       await api.signIn(email, password);
-      await onSignedIn();
-    } catch {
-      setError('adminSignInFailed');
+      onSignedIn();
+    } catch (err) {
+      setError(err?.code === 'invalid_credentials' ? 'signInError' : 'adminSignInFailed');
     } finally {
       setBusy(false);
     }
@@ -90,9 +90,9 @@ function LoginCard({ onSignedIn, denied }) {
             </button>
           </>
         )}
-        {error || denied ? (
+        {error ? (
           <p className="field-error" role="alert">
-            <Icon name="alert" size={16} /> {t(error || 'noAccess')}
+            <Icon name="alert" size={16} /> {t(error)}
           </p>
         ) : null}
       </form>
@@ -318,8 +318,75 @@ async function exportCsv(rows, t, lang) {
 /* ------------------------------------------------------------ Page */
 
 export default function AdminPage() {
+  const { t } = useI18n();
+  const [access, setAccess] = useState({ phase: 'checking' });
+  const [attempt, setAttempt] = useState(0);
+  const [signingOut, setSigningOut] = useState(false);
+  const [signOutError, setSignOutError] = useState(false);
+
+  useEffect(() => {
+    let current = true;
+    getAdminAccess().then(
+      (result) => { if (current) setAccess(result); },
+      () => { if (current) setAccess({ phase: 'error' }); },
+    );
+    return () => { current = false; };
+  }, [attempt]);
+
+  function checkAgain() {
+    setSignOutError(false);
+    setAccess({ phase: 'checking' });
+    setAttempt((n) => n + 1);
+  }
+
+  async function signOut() {
+    setSigningOut(true);
+    setSignOutError(false);
+    try {
+      await api.signOut();
+      setAccess({ phase: 'login' });
+    } catch {
+      setSignOutError(true);
+    } finally {
+      setSigningOut(false);
+    }
+  }
+
+  if (access.phase === 'checking') {
+    return <div className="page"><div className="doc-loading" role="status">
+      <span className="spinner" aria-hidden="true" /> {t('adminCheckingAccess')}
+    </div></div>;
+  }
+  if (access.phase === 'login') return <LoginCard onSignedIn={checkAgain} />;
+  if (access.phase === 'ready') {
+    return <AdminDashboard signOut={signOut} signingOut={signingOut} signOutError={signOutError} />;
+  }
+
+  return (
+    <div className="login-wrap">
+      <section className="login-card" aria-labelledby="access-title">
+        <span className="login-icon"><Icon name="lock" size={22} /></span>
+        <h1 id="access-title">{t('adminTitle')}</h1>
+        {access.phase === 'denied' ? (
+          <>
+            <p className="login-account">{t('signedInAs', { email: access.email })}</p>
+            <p className="muted">{t('noAccess')}</p>
+          </>
+        ) : <p className="field-error" role="alert">{t('adminAccessFailed')}</p>}
+        <button type="button" className="btn btn-primary btn-block" disabled={signingOut} onClick={checkAgain}>
+          {t('recheckAccess')}
+        </button>
+        <button type="button" className="btn btn-secondary btn-block" disabled={signingOut} onClick={signOut}>
+          {t('switchAccount')}
+        </button>
+        {signOutError ? <p className="field-error" role="alert">{t('adminSignOutFailed')}</p> : null}
+      </section>
+    </div>
+  );
+}
+
+function AdminDashboard({ signOut, signingOut, signOutError }) {
   const { t, lang } = useI18n();
-  const [phase, setPhase] = useState('checking'); // checking | login | denied | ready | error
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadError, setLoadError] = useState('');
@@ -328,7 +395,6 @@ export default function AdminPage() {
   const [showAllUncovered, setShowAllUncovered] = useState(false);
   const [copied, setCopied] = useState(false);
   const [exporting, setExporting] = useState(false);
-  const [signingOut, setSigningOut] = useState(false);
   const [actionError, setActionError] = useState('');
   const [notice, setNotice] = useState('');
   const [shownComments, setShownComments] = useState(FEED_PAGE_SIZE);
@@ -347,24 +413,11 @@ export default function AdminPage() {
     } finally {
       setLoading(false);
     }
-  }, [t]);
-
-  const checkAccess = useCallback(async () => {
-    const session = await api.getSession();
-    if (!session) return setPhase('login');
-    const ok = await api.isAdmin();
-    if (!ok) {
-      await api.signOut();
-      return setPhase('denied');
-    }
-    setPhase('ready');
-    load();
-  }, [load]);
+  }, []);
 
   useEffect(() => {
-    checkAccess().catch(() => setPhase('error'));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    load();
+  }, [load]);
 
   const stats = useMemo(() => {
     const docIds = new Set(DOCUMENTS.map((d) => d.id));
@@ -437,22 +490,6 @@ export default function AdminPage() {
     if (result?.audioCleanupFailed) setActionError('adminAudioCleanupFailed');
   }
 
-  async function signOut() {
-    setSigningOut(true);
-    setActionError('');
-    try {
-      await api.signOut();
-      setComments([]);
-      setUpdatedAt(null);
-      setFilters(EMPTY_FILTERS);
-      setPhase('login');
-    } catch {
-      setActionError('adminSignOutFailed');
-    } finally {
-      setSigningOut(false);
-    }
-  }
-
   async function copySiteLink() {
     const link = `${window.location.origin}${window.location.pathname}`;
     try {
@@ -476,30 +513,6 @@ export default function AdminPage() {
     } finally {
       setExporting(false);
     }
-  }
-
-  if (phase === 'checking') {
-    return (
-      <div className="page">
-        <div className="doc-loading" role="status" aria-label={t('adminCheckingAccess')}>
-          <span className="spinner" aria-hidden="true" />
-        </div>
-      </div>
-    );
-  }
-  if (phase === 'error') {
-    return (
-      <div className="page">
-        <p className="field-error" role="alert">{t('adminAccessFailed')}</p>
-        <button type="button" className="btn btn-primary" onClick={() => {
-          setPhase('checking');
-          checkAccess().catch(() => setPhase('error'));
-        }}>{t('refresh')}</button>
-      </div>
-    );
-  }
-  if (phase === 'login' || phase === 'denied') {
-    return <LoginCard onSignedIn={checkAccess} denied={phase === 'denied'} />;
   }
 
   const uncoveredShown = showAllUncovered ? stats.uncovered : stats.uncovered.slice(0, UNCOVERED_PREVIEW);
@@ -534,6 +547,7 @@ export default function AdminPage() {
         </p>
       ) : null}
       {actionError ? <p className="field-error" role="alert">{t(actionError)}</p> : null}
+      {signOutError ? <p className="field-error" role="alert">{t('adminSignOutFailed')}</p> : null}
       {notice ? <p className="muted" role="status">{t(notice)}</p> : null}
       {loading ? <p className="muted" role="status">{t('adminLoadingComments')}</p> : null}
 

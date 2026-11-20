@@ -480,6 +480,19 @@ button {
   background: var(--surface-2);
 }
 
+.manager-link {
+  color: var(--accent-soft-ink);
+}
+
+.manager-link[aria-current='page'] {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.manager-short {
+  display: none;
+}
+
 .btn-ghost {
   background: transparent;
   color: var(--ink-2);
@@ -2261,6 +2274,11 @@ select.input {
   font-size: var(--fs-xl);
 }
 
+.login-account {
+  overflow-wrap: anywhere;
+  font-weight: 600;
+}
+
 .login-icon {
   width: 48px;
   height: 48px;
@@ -2292,6 +2310,32 @@ select.input {
 }
 
 @media (max-width: 560px) {
+  .topbar-inner,
+  .brand {
+    gap: var(--s2);
+  }
+
+  .topbar-actions {
+    gap: var(--s1);
+  }
+
+  .manager-link {
+    padding-inline: var(--s2);
+    gap: var(--s1);
+  }
+
+  .manager-full {
+    display: none;
+  }
+
+  .manager-short {
+    display: inline;
+  }
+
+  .lang-switch button {
+    padding-inline: var(--s2);
+  }
+
   .page {
     padding-top: var(--s5);
   }
@@ -2337,6 +2381,12 @@ select.input {
 
   .field-row {
     grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 370px) {
+  .brand-text {
+    display: none;
   }
 }
 

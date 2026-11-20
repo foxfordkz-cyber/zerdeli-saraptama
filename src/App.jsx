@@ -84,6 +84,16 @@ export default function App() {
             </span>
           </a>
           <div className="topbar-actions">
+            <a
+              className="btn btn-secondary manager-link"
+              href="#/admin"
+              aria-label={t('adminTitle')}
+              aria-current={route.name === 'admin' ? 'page' : undefined}
+            >
+              <Icon name="lock" size={16} />
+              <span className="manager-full">{t('adminTitle')}</span>
+              <span className="manager-short">{t('adminShort')}</span>
+            </a>
             <div className="lang-switch" role="group" aria-label={t('languageLabel')}>
               {['kk', 'ru'].map((code) => (
                 <button

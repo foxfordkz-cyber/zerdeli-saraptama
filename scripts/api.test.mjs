@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { webcrypto } from 'node:crypto';
-import { api, createSupabaseApi, csvCell, idbOp, parseDemoRows } from '../src/lib/api.js';
+import { api, createSupabaseApi, csvCell, getAdminAccess, idbOp, parseDemoRows } from '../src/lib/api.js';
 
 const row = (id = '1') => ({
   id, document_id: 'math-1', first_name: 'A', last_name: 'B', school: 'School',
@@ -76,6 +76,38 @@ test('session and logout errors propagate', async () => {
   const remote = createSupabaseApi(() => sb);
   await assert.rejects(remote.getSession(), /session failure/);
   await assert.rejects(remote.signOut(), /logout failure/);
+});
+
+test('a signed-in account can recheck access after a manager grant without logging in again', async () => {
+  const email = 'manager@example.org';
+  let session = null;
+  let allowed = false;
+  let checks = 0;
+  const remote = createSupabaseApi(() => ({
+    auth: { getSession: async () => ({ data: { session } }) },
+    async rpc(name) {
+      assert.equal(name, 'is_admin');
+      checks++;
+      return { data: allowed };
+    },
+  }));
+  assert.deepEqual(await getAdminAccess(remote), { phase: 'login' });
+  assert.equal(checks, 0);
+  session = { user: { email } };
+  assert.deepEqual(await getAdminAccess(remote), { phase: 'denied', email });
+  allowed = true;
+  assert.deepEqual(await getAdminAccess(remote), { phase: 'ready' });
+  assert.equal(checks, 2);
+});
+
+test('an unavailable or invalid role check never opens the cabinet or reports a missing role', async () => {
+  for (const response of [{ error: new Error('offline') }, { data: null }, { data: 'true' }]) {
+    const remote = createSupabaseApi(() => ({
+      auth: { getSession: async () => ({ data: { session: { user: { email: 'manager@example.org' } } } }) },
+      rpc: async () => response,
+    }));
+    await assert.rejects(getAdminAccess(remote));
+  }
 });
 
 test('audio export batches unique paths and refuses missing signed links', async () => {
