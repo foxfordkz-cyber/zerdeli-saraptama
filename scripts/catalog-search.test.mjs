@@ -51,6 +51,15 @@ test('numeric searches find intermediate grades but do not confuse 1 with 10', (
   assert.deepEqual(ids({ query: '10 класс' }), ['senior']);
 });
 
+test('a chapter search finds its volume in either language without matching longer Roman numerals', () => {
+  const chapters = buildCatalogIndex(['I–IV', 'V', 'VI', 'VII', 'VIII', 'IX'].map((part) => ({
+    id: part, part, subject: 'system', title: { kk: part, ru: part },
+  })), subjects);
+  for (const [query, part] of [['Раздел III', 'I–IV'], ['ІІ бөлім', 'I–IV'], ['V', 'V'], ['VI бөлім', 'VI'], ['Раздел IX', 'IX']]) {
+    assert.deepEqual(filterCatalogIndex(chapters, { query }).map((d) => d.part), [part]);
+  }
+});
+
 test('persisted filters reject stale and malformed values while preserving valid selections', () => {
   const choices = { subject: ['all', 'math'], grade: ['all', 'none', '5'], kind: ['all', 'plan'], format: ['all', 'xlsx'] };
   assert.deepEqual(sanitizeCatalogFilters(null, choices), DEFAULT_CATALOG_FILTERS);

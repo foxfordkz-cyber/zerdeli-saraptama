@@ -41,7 +41,31 @@ test('revised education concept includes all chapters, tables and new subsection
   assert.ok(concept.sections.some((section) => section.title.startsWith('1.8 ')));
   assert.ok(concept.sections.some((section) => section.title.startsWith('3.13. ')));
   assert.match(html.textContent, /Осы Тұжырымдама Zerdeli жүйесінің мақсатын/);
-  assert.equal(concept.fileName, '0102Zerdeli_Education_System_I_IV_bolim_zhumys_nusqasy.docx');
+  assert.equal(concept.fileName, '01020304Zerdeli_I_IV_psihologia_zhangartylgan (1).docx');
+  assert.match(html.textContent, /Психологиялық даму сабақтары/);
+});
+
+test('the nine entries in the original contents open the correct chapter across all six files', async () => {
+  const generated = await loadJson('src/generated/catalog.json');
+  const parts = generated.documents.filter((d) => d.subject === 'education-system');
+  const expected = [
+    ['I–IV', 40, 10], ['V', 8, 3], ['VI', 8, 4], ['VII', 8, 2], ['VIII', 7, 0], ['IX', 4, 0],
+  ];
+  const links = [];
+  for (const [i, d] of parts.entries()) {
+    const html = parse(await fs.readFile(path.join(root, 'public/content/docs', d.id + '.html'), 'utf8'));
+    assert.deepEqual([d.part, d.sections.length, html.querySelectorAll('table').length], expected[i]);
+    for (const chapter of d.sections.filter((s) => s.level === 2)) {
+      links.push({ title: chapter.title, href: '#/doc/' + d.id + (i === 0 ? '?section=' + chapter.id : '') });
+    }
+  }
+  const concept = parse(await fs.readFile(path.join(root, 'public/content/docs/education-system.html'), 'utf8'));
+  assert.equal(concept.querySelector('.doc-front .doc-contents'), null);
+  const contents = concept.querySelectorAll('.doc-contents a').map((a) => ({ title: a.textContent, href: a.getAttribute('href') }));
+  assert.equal(links.length, 9);
+  assert.deepEqual(contents, links);
+  const matrix = parts.find((d) => d.part === 'V');
+  assert.equal(matrix.sections.find((s) => s.id === 's5').title, '5.3. Міндетті білім беру бағыттарының бірыңғай матрицасы');
 });
 
 test('tables retain merged cells and wrap for horizontal scrolling', () => {
@@ -74,7 +98,7 @@ test('every generated document has matching original, readable sections and work
   validateCatalog(source);
   assert.equal(generated.documents.length, source.documents.length);
   assert.equal(source.documents.some((d) => d.id === 'dombyra-appendix'), false);
-  assert.deepEqual(source.documents.filter((d) => d.subject === 'education-system').map((d) => d.part), ['I', 'II–V']);
+  assert.deepEqual(source.documents.filter((d) => d.subject === 'education-system').map((d) => d.part), ['I–IV', 'V', 'VI', 'VII', 'VIII', 'IX']);
   for (const d of generated.documents) {
     const original = await fs.readFile(path.join(root, 'content', 'docs', `${d.id}.${d.format}`));
     const download = await fs.readFile(path.join(root, 'public', 'content', 'files', `${d.id}.${d.format}`));

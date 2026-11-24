@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 import mammoth from 'mammoth';
 import { parse } from 'node-html-parser';
 import { createHash } from 'node:crypto';
+import { sectionHref } from '../src/lib/routing.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const catalogPath = path.join(root, 'content', 'catalog.json');
@@ -22,9 +23,18 @@ const styleMap = [
   "p[style-name='Heading 2'] => h3:fresh",
   "p[style-name='Heading 3'] => h4:fresh",
   "p[style-name='Heading 4'] => h4:fresh",
+  "p[style-name='Zerdeli Contents Title'] => div.doc-contents > p.contents-title:fresh",
+  "p[style-name='Zerdeli Contents Section'] => div.doc-contents > p.contents-chapter:fresh",
+  "p[style-name='Zerdeli Contents Detail'] => div.doc-contents > p:fresh",
 ];
 
 const WORDS_PER_MINUTE = 180;
+const subsectionNumber = /^(\d+\.\d+)\.?\s/u;
+
+function chapterNumber(title) {
+  // The originals use both Cyrillic І and Latin I for Roman numerals.
+  return /^([IVXІ]+)\s+бөлім(?=[\s.:]|$)/iu.exec(title)?.[1].toUpperCase().replaceAll('І', 'I');
+}
 
 function cleanText(s) {
   return s.replace(/\s+/g, ' ').trim();
@@ -50,19 +60,20 @@ function sanitize(container) {
   }
 }
 
-export function postProcess(html, { keepTopHeadings = false, numberedHeadingsOnly = false } = {}) {
+export function postProcess(html, { id: documentId, keepTopHeadings = false, numberedHeadingsOnly = false, sectionIds = {} } = {}, chapterDocuments = new Map()) {
   const doc = parse(`<div id="root">${html}</div>`);
   const container = doc.querySelector('#root');
   sanitize(container);
 
-  // Some revised concepts apply Word heading styles to body paragraphs too.
-  // Keep only numbered chapters/subsections in the reader's section list.
+  // The concept styles some body text as headings; the matrix uses plain
+  // paragraphs for its headings. Both use the same chapter numbering.
   if (numberedHeadingsOnly) {
-    for (const h of container.querySelectorAll('h2, h3')) {
-      const text = cleanText(h.textContent);
-      if (!/^(?:[IVXІ]+\s+бөлім(?=[\s.:]|$)|\d+\.\d+\.?\s)/iu.test(text)) {
-        h.replaceWith(parse(`<p>${h.innerHTML}</p>`));
-      }
+    for (const el of container.querySelectorAll('h2, h3, p')) {
+      if (el.tagName === 'P' && el.parentNode !== container) continue;
+      const text = cleanText(el.textContent);
+      if (chapterNumber(text)) el.tagName = 'h2';
+      else if (subsectionNumber.test(text)) el.tagName = 'h3';
+      else el.tagName = 'p';
     }
   }
 
@@ -88,19 +99,35 @@ export function postProcess(html, { keepTopHeadings = false, numberedHeadingsOnl
 
   // Number headings and collect the section list for the comment form.
   const sections = [];
-  let n = 0;
+  // Preserve links to retained matrix topics after the sections were renumbered.
+  let nextId = Math.max(0, ...Object.values(sectionIds).map((id) => Number(id.slice(1))));
   for (const h of container.querySelectorAll('h2, h3')) {
     const text = cleanText(h.textContent);
     if (!text) { h.remove(); continue; }
-    n += 1;
-    const id = `s${n}`;
+    const number = chapterNumber(text) || subsectionNumber.exec(text)?.[1];
+    const id = sectionIds[number] ?? `s${++nextId}`;
     h.setAttribute('id', id);
     sections.push({ id, level: h.tagName === 'H2' ? 2 : 3, title: text.slice(0, 200) });
   }
 
-  // Everything before the first heading is the title page: style it apart.
+  // The first volume includes the contents of all nine chapters. Local
+  // chapters open at their heading; later chapters open the matching file.
+  const contents = container.querySelector('.doc-contents');
+  if (contents) {
+    const links = new Map([...chapterDocuments].map(([part, id]) => [part, `#/doc/${id}`]));
+    for (const section of sections) {
+      const part = chapterNumber(section.title);
+      if (part) links.set(part, sectionHref(documentId, section.id));
+    }
+    for (const entry of contents.querySelectorAll('.contents-chapter')) {
+      const href = links.get(chapterNumber(cleanText(entry.textContent)));
+      if (href) entry.innerHTML = `<a href="${href}">${entry.innerHTML}</a>`;
+    }
+  }
+
+  // Style the cover separately from both the contents and the body.
   const nodes = [...container.childNodes];
-  const firstHeading = nodes.findIndex((el) => el.tagName === 'H2' || el.tagName === 'H3');
+  const firstHeading = nodes.findIndex((el) => el === contents || el.tagName === 'H2' || el.tagName === 'H3');
   if (firstHeading > 0) {
     const frontNodes = nodes.slice(0, firstHeading);
     const frontHtml = frontNodes.map((el) => el.toString()).join('');
@@ -165,15 +192,17 @@ export async function main() {
   }
 
   const documents = [];
+  const chapterDocuments = new Map(catalog.documents.filter((d) => d.subject === 'education-system' && d.part).map((d) => [d.part, d.id]));
 
   for (const d of catalog.documents) {
     const format = d.format || 'docx';
     const { src, value, pages } = await readDocument(d);
-    const { html, sections, words } = postProcess(value, d);
+    const { html, sections, words } = postProcess(value, d, chapterDocuments);
     if (!words) throw new Error(`Empty document: ${d.id}`);
     await fs.writeFile(path.join(outHtmlDir, `${d.id}.html`), html);
-    await fs.copyFile(src, path.join(outFileDir, `${d.id}.${format}`));
-    const { size } = await fs.stat(src);
+    const original = await fs.readFile(src);
+    await fs.writeFile(path.join(outFileDir, `${d.id}.${format}`), original);
+    const revision = createHash('sha256').update(original).update(html).digest('hex').slice(0, 16);
 
     documents.push({
       id: d.id,
@@ -188,7 +217,8 @@ export async function main() {
       load: d.load ?? null,
       note: d.note ?? null,
       fileName: path.basename(d.source),
-      fileSize: size,
+      fileSize: original.length,
+      revision,
       words,
       minutes: Math.max(1, Math.round(words / WORDS_PER_MINUTE)),
       sections,

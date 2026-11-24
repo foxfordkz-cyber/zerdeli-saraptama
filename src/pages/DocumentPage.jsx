@@ -26,6 +26,7 @@ function useIsMobile() {
 export default function DocumentPage({ id, initialSection = '' }) {
   const { t, lang } = useI18n();
   const doc = getDocument(id);
+  const downloadUrl = doc ? `${BASE}content/files/${doc.id}.${doc.format}?v=${doc.revision}` : '';
   const subject = doc ? getSubject(doc.subject) : null;
   const isMobile = useIsMobile();
 
@@ -51,7 +52,7 @@ export default function DocumentPage({ id, initialSection = '' }) {
     setLoadState('loading');
     setHtml('');
     setSectionId('');
-    fetch(`${BASE}content/docs/${doc.id}.html`, { signal: controller.signal })
+    fetch(`${BASE}content/docs/${doc.id}.html?v=${doc.revision}`, { signal: controller.signal })
       .then((r) => {
         if (!r.ok) throw new Error(String(r.status));
         return r.text();
@@ -111,7 +112,7 @@ export default function DocumentPage({ id, initialSection = '' }) {
           img.replaceWith(link);
           link.appendChild(img);
         }
-        link.href = `${BASE}content/files/${doc.id}.pdf#page=${index + 1}`;
+        link.href = `${downloadUrl}#page=${index + 1}`;
         link.target = '_blank';
         link.rel = 'noopener noreferrer';
         link.setAttribute('aria-label', t('openPdfPage', { n: index + 1 }));
@@ -123,7 +124,7 @@ export default function DocumentPage({ id, initialSection = '' }) {
       table.setAttribute('role', 'region');
       table.setAttribute('aria-label', t('scrollableTable'));
     });
-  }, [html, loadState, t, doc]);
+  }, [html, loadState, t, doc, downloadUrl]);
 
   // Highlight the section being read in the table of contents.
   useEffect(() => {
@@ -187,7 +188,7 @@ export default function DocumentPage({ id, initialSection = '' }) {
   function onArticleClick(e) {
     const btn = e.target.closest?.('.sec-btn');
     if (btn) openFormFor(btn.dataset.section);
-    const link = e.target.closest?.('a[href^="#"]');
+    const link = e.target.closest?.('a[href^="#"]:not([href^="#/"])');
     if (link) {
       e.preventDefault();
       let targetId;
@@ -259,7 +260,7 @@ export default function DocumentPage({ id, initialSection = '' }) {
           {doc.minutes ? <span className="doc-meta-text">{t('minutesRead', { n: doc.minutes })}</span> : null}
           <a
             className="btn btn-secondary btn-sm doc-download"
-            href={`${BASE}content/files/${doc.id}.${format}`}
+            href={downloadUrl}
             download={doc.fileName}
           >
             <Icon name="download" size={16} /> {t('download', { format })}
@@ -268,7 +269,7 @@ export default function DocumentPage({ id, initialSection = '' }) {
         </div>
         <div className="reader-actions">
           {!isMobile ? <button type="button" className="btn btn-secondary btn-sm" disabled={recordingBusy} aria-pressed={reading} onClick={() => setReading((value) => !value)}>{t(reading ? 'showReviewPanel' : 'readingMode')}</button> : null}
-          {format === 'pdf' ? <a className="btn btn-ghost btn-sm" href={`${BASE}content/files/${doc.id}.pdf`} target="_blank" rel="noopener noreferrer">{t('openPdf')}</a> : null}
+          {format === 'pdf' ? <a className="btn btn-ghost btn-sm" href={downloadUrl} target="_blank" rel="noopener noreferrer">{t('openPdf')}</a> : null}
           {format === 'pdf' ? <span className="field-note">{t('pdfZoomHint')}</span> : null}
         </div>
       </header>
@@ -280,10 +281,11 @@ export default function DocumentPage({ id, initialSection = '' }) {
               key={part.id}
               className={`system-part${part.id === doc.id ? ' is-active' : ''}`}
               href={`#/doc/${part.id}`}
+              aria-label={part.title[lang]}
+              title={part.title[lang]}
               aria-current={part.id === doc.id ? 'page' : undefined}
             >
-              <span className="system-part-number">{part.part}</span>
-              <span>{part.title[lang]}</span>
+              {t(/[–-]/.test(part.part) ? 'partsLabel' : 'partLabel', { p: part.part })}
             </a>
           ))}
         </nav>

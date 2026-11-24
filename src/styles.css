@@ -1056,11 +1056,6 @@ select.input {
   background: var(--accent-soft);
 }
 
-.system-part-number {
-  flex: none;
-  font-weight: 700;
-}
-
 .compact-contents {
   display: none;
   margin-bottom: var(--s5);
@@ -1232,6 +1227,20 @@ select.input {
   font-size: var(--fs-xs);
   letter-spacing: 0.14em;
   color: var(--accent);
+}
+
+.prose .doc-contents .contents-title,
+.prose .doc-contents .contents-chapter {
+  font-family: var(--font-ui);
+  font-weight: 700;
+}
+
+.prose .doc-contents .contents-chapter {
+  margin-bottom: 0;
+}
+
+.prose .doc-contents .contents-chapter + p {
+  margin-top: var(--s1);
 }
 
 .prose h2,

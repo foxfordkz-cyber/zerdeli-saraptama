@@ -2,6 +2,16 @@ export const DEFAULT_CATALOG_FILTERS = Object.freeze({
   query: '', subject: 'all', grade: 'all', kind: 'all', format: 'all',
 });
 
+const CHAPTERS = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX'];
+
+function chaptersInVolume(part) {
+  if (!part) return '';
+  const [first, last = first] = part.split(/[–—-]/);
+  const start = CHAPTERS.indexOf(first);
+  const end = CHAPTERS.indexOf(last);
+  return start >= 0 && end >= start ? CHAPTERS.slice(start, end + 1).join(' ') : part;
+}
+
 export function normalizeSearch(value) {
   return String(value ?? '')
     .normalize('NFKC')
@@ -34,7 +44,7 @@ export function buildCatalogIndex(documents, subjects, labels = {}) {
       subject?.title.kk, subject?.title.ru, doc.title.kk, doc.title.ru,
       doc.note?.kk, doc.note?.ru,
       grades.length ? `${grades.join(' ')} сынып класс` : '',
-      doc.part ? `${doc.part} бөлім раздел` : '',
+      doc.part ? `${chaptersInVolume(doc.part)} бөлім бөлімдер раздел разделы` : '',
       labels[`kind_${doc.kind}`], labels[`lang_${doc.lang}`],
       doc.kind, doc.format || 'docx',
     ].join(' '));
@@ -51,7 +61,10 @@ export function filterCatalogIndex(index, filters) {
     if (!['all', 'none'].includes(selected.grade) && !grades.includes(Number(selected.grade))) return false;
     if (selected.kind !== 'all' && doc.kind !== selected.kind) return false;
     if (selected.format !== 'all' && (doc.format || 'docx') !== selected.format) return false;
-    return words.every((word) => /^\d+$/.test(word) ? tokens.has(word) : text.includes(word));
+    return words.every((word) => {
+      if (/^[iіvx]+$/u.test(word)) return tokens.has(word.replaceAll('і', 'i'));
+      return /^\d+$/.test(word) ? tokens.has(word) : text.includes(word);
+    });
   }).map(({ doc }) => doc);
 }
 
