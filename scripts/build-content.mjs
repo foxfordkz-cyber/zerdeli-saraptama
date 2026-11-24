@@ -50,10 +50,21 @@ function sanitize(container) {
   }
 }
 
-export function postProcess(html, { keepTopHeadings = false } = {}) {
+export function postProcess(html, { keepTopHeadings = false, numberedHeadingsOnly = false } = {}) {
   const doc = parse(`<div id="root">${html}</div>`);
   const container = doc.querySelector('#root');
   sanitize(container);
+
+  // Some revised concepts apply Word heading styles to body paragraphs too.
+  // Keep only numbered chapters/subsections in the reader's section list.
+  if (numberedHeadingsOnly) {
+    for (const h of container.querySelectorAll('h2, h3')) {
+      const text = cleanText(h.textContent);
+      if (!/^(?:[IVXІ]+\s+бөлім(?=[\s.:]|$)|\d+\.\d+\.?\s)/iu.test(text)) {
+        h.replaceWith(parse(`<p>${h.innerHTML}</p>`));
+      }
+    }
+  }
 
   // Drop empty paragraphs left by spacing in Word.
   for (const p of container.querySelectorAll('p')) {

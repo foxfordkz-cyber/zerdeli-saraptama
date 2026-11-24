@@ -22,6 +22,28 @@ test('existing title-page conversion keeps its section identifiers', () => {
   assert.deepEqual(result.sections.map(({ id, title }) => [id, title]), [['s1', 'Түсінік хат'], ['s2', 'Мақсаты']]);
 });
 
+test('numbered concepts keep chapters but demote body text styled as headings', () => {
+  const html = '<h2>І бөлім. Тұжырымдама негіздері</h2><h3>1.1. Жалпы ережелер</h3><h3>Осы <strong>Тұжырымдама</strong> жүйені айқындайды.</h3><h3>1.8 Негізгі ұғымдар</h3><h2>IV бөлім. Оқыту моделі</h2>';
+  const result = postProcess(html, { keepTopHeadings: true, numberedHeadingsOnly: true });
+  assert.equal(result.sections.length, 4);
+  assert.deepEqual(result.sections.map((section) => section.level), [2, 3, 3, 2]);
+  assert.match(result.html, /<p>Осы <strong>Тұжырымдама<\/strong> жүйені айқындайды\.<\/p>/);
+  assert.equal(postProcess(html, { keepTopHeadings: true }).sections.length, 5);
+});
+
+test('revised education concept includes all chapters, tables and new subsections', async () => {
+  const generated = await loadJson('src/generated/catalog.json');
+  const concept = generated.documents.find((doc) => doc.id === 'education-system');
+  const html = parse(await fs.readFile(path.join(root, 'public/content/docs/education-system.html'), 'utf8'));
+  assert.equal(concept.sections.length, 40);
+  assert.equal(concept.sections.filter((section) => section.level === 2).length, 4);
+  assert.equal(html.querySelectorAll('table').length, 10);
+  assert.ok(concept.sections.some((section) => section.title.startsWith('1.8 ')));
+  assert.ok(concept.sections.some((section) => section.title.startsWith('3.13. ')));
+  assert.match(html.textContent, /Осы Тұжырымдама Zerdeli жүйесінің мақсатын/);
+  assert.equal(concept.fileName, '0102Zerdeli_Education_System_I_IV_bolim_zhumys_nusqasy.docx');
+});
+
 test('tables retain merged cells and wrap for horizontal scrolling', () => {
   const result = postProcess('<h2>Жоспар</h2><table><tr><th colspan="2">Жоспар</th></tr><tr><td rowspan="2">А</td><td>Б</td></tr><tr><td>В</td></tr></table>');
   const doc = parse(result.html);

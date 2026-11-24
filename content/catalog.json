@@ -186,10 +186,11 @@
       "lang": "kk",
       "part": "I",
       "keepTopHeadings": true,
-      "source": "01Zerdeli_Education_System_I_IV_bolim_zhumys_nusqasy.docx",
+      "numberedHeadingsOnly": true,
+      "source": "0102Zerdeli_Education_System_I_IV_bolim_zhumys_nusqasy.docx",
       "title": {
-        "kk": "I бөлім · Білім беру және тұлғалық даму тұжырымдамасы",
-        "ru": "Раздел I · Концепция образования и личностного развития"
+        "kk": "I бөлім · Авторлық білім беру жүйесінің тұжырымдамасы",
+        "ru": "Раздел I · Концепция авторской образовательной системы"
       },
       "load": null,
       "note": {

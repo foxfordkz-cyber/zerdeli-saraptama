@@ -6,7 +6,7 @@ import { api, csvCell, getAdminAccess } from '../lib/api.js';
 import { DOCUMENTS, RETIRED_DOCUMENTS, SUBJECTS, documentLabel, getCommentDocument, getSubject } from '../lib/catalog.js';
 import { formatDateTime, formatNumber, formatSortable, formatTime, formatTotalAudio, initials, normalize } from '../lib/format.js';
 import { HEAD_OFFICE } from '../data/schools.js';
-import { sectionHref } from '../lib/routing.js';
+import { commentHref } from '../lib/routing.js';
 
 const EMPTY_FILTERS = { q: '', subject: '', doc: '', school: '', type: '', status: '' };
 const UNCOVERED_PREVIEW = 12;
@@ -157,9 +157,7 @@ function CommentCard({ c, onStatus, onDelete }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const doc = getCommentDocument(c.document_id);
-  const documentHref = /^s\d{1,4}$/.test(c.section_id || '') && doc?.sections?.some((section) => section.id === c.section_id)
-    ? sectionHref(c.document_id, c.section_id)
-    : `#/doc/${c.document_id}`;
+  const documentHref = commentHref(c, doc?.sections);
   const loadSrc = useCallback(() => api.audioUrl(c.audio_path), [c.audio_path]);
 
   async function toggleStatus() {
